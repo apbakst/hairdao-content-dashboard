@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HairDAO Content Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        emerald: {
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            300: '#6ee7b7',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .prose h1 { font-size: 2rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; color: #10b981; }
+        .prose h2 { font-size: 1.5rem; font-weight: 600; margin-top: 1.75rem; margin-bottom: 0.75rem; color: #34d399; }
+        .prose h3 { font-size: 1.25rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; color: #6ee7b7; }
+        .prose h4 { font-size: 1.1rem; font-weight: 500; margin-top: 1.25rem; margin-bottom: 0.5rem; color: #a7f3d0; }
+        .prose p { margin-bottom: 1rem; line-height: 1.75; }
+        .prose ul, .prose ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        .prose li { margin-bottom: 0.25rem; }
+        .prose ul { list-style-type: disc; }
+        .prose ol { list-style-type: decimal; }
+        .prose code { background: #27272a; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.875rem; }
+        .prose pre { background: #18181b; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
+        .prose pre code { background: transparent; padding: 0; }
+        .prose blockquote { border-left: 4px solid #10b981; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #a1a1aa; }
+        .prose table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+        .prose th, .prose td { border: 1px solid #3f3f46; padding: 0.5rem 1rem; text-align: left; }
+        .prose th { background: #27272a; font-weight: 600; }
+        .prose tr:nth-child(even) { background: #18181b; }
+        .prose a { color: #34d399; text-decoration: underline; }
+        .prose hr { border-color: #3f3f46; margin: 2rem 0; }
+        .prose strong { color: #f4f4f5; }
+        .tweet-card { transition: all 0.2s; }
+        .tweet-card:hover { transform: translateY(-2px); }
+        .sidebar-link { transition: all 0.15s; }
+        .sidebar-link:hover { background: rgba(16, 185, 129, 0.1); }
+        .sidebar-link.active { background: rgba(16, 185, 129, 0.2); border-left: 3px solid #10b981; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #18181b; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #52525b; }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-100 font-sans">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="w-64 bg-zinc-900 border-r border-zinc-800 flex flex-col fixed h-full z-30 transform -translate-x-full md:translate-x-0 transition-transform duration-200">
+            <div class="p-4 border-b border-zinc-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-emerald-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-emerald-400">HairDAO</h1>
+                        <p class="text-xs text-zinc-500">Content Dashboard</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="flex-1 overflow-y-auto p-2">
+                <div class="mb-4">
+                    <p class="px-3 py-2 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Navigation</p>
+                    <button onclick="showSection('home')" class="sidebar-link active w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left" data-section="home">
+                        <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                        Dashboard
+                    </button>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="px-3 py-2 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Content</p>
+                    <button onclick="showSection('strategy')" class="sidebar-link w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left" data-section="strategy">
+                        <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        Content Strategy
+                    </button>
+                    <button onclick="showSection('week1')" class="sidebar-link w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left" data-section="week1">
+                        <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                        Week 1 Posts
+                    </button>
+                    <button onclick="showSection('weeks24')" class="sidebar-link w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left" data-section="weeks24">
+                        <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                        Weeks 2-4 Posts
+                    </button>
+                    <button onclick="showSection('videos')" class="sidebar-link w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left" data-section="videos">
+                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        Video Scripts
+                    </button>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="px-3 py-2 text-xs font-semibold text-zinc-500 uppercase tracking-wider">Reference</p>
+                    <button onclick="showSection('competitors')" class="sidebar-link w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left" data-section="competitors">
+                        <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        Competitor Analysis
+                    </button>
+                    <button onclick="showSection('community')" class="sidebar-link w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left" data-section="community">
+                        <svg class="w-5 h-5 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        Community Playbook
+                    </button>
+                    <button onclick="showSection('investor')" class="sidebar-link w-full flex items-center gap-3 px-3 py-2 rounded-lg text-left" data-section="investor">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Investor/Press Kit
+                    </button>
+                </div>
+            </nav>
+            
+            <div class="p-4 border-t border-zinc-800">
+                <div class="flex items-center gap-2 text-xs text-zinc-500">
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <span>Last updated: Jan 2025</span>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Mobile menu button -->
+        <button id="menuBtn" onclick="toggleSidebar()" class="md:hidden fixed top-4 left-4 z-40 p-2 bg-zinc-800 rounded-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+        
+        <!-- Main Content -->
+        <main class="flex-1 md:ml-64 overflow-y-auto">
+            <!-- Search Bar -->
+            <div class="sticky top-0 z-20 bg-zinc-950/95 backdrop-blur border-b border-zinc-800 p-4">
+                <div class="max-w-4xl mx-auto flex flex-col sm:flex-row gap-4">
+                    <div class="flex-1 relative">
+                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Search content..." class="w-full pl-10 pr-4 py-2 bg-zinc-900 border border-zinc-700 rounded-lg focus:outline-none focus:border-emerald-500 transition-colors">
+                    </div>
+                    <div class="flex gap-2">
+                        <select id="accountFilter" class="px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg focus:outline-none focus:border-emerald-500">
+                            <option value="">All Accounts</option>
+                            <option value="@HairDAO_">@HairDAO_</option>
+                            <option value="@andrew_bakst">@andrew_bakst</option>
+                            <option value="@VerbinnenAndrew">@VerbinnenAndrew</option>
+                            <option value="@AJTraxler">@AJTraxler</option>
+                        </select>
+                        <select id="typeFilter" class="px-3 py-2 bg-zinc-900 border border-zinc-700 rounded-lg focus:outline-none focus:border-emerald-500">
+                            <option value="">All Types</option>
+                            <option value="post">Posts</option>
+                            <option value="thread">Threads</option>
+                            <option value="video">Videos</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Content Area -->
+            <div id="content" class="p-4 md:p-8 max-w-5xl mx-auto">
+                <!-- Content will be injected here -->
+            </div>
+        </main>
+    </div>
+    
+    <!-- Toast for copy notification -->
+    <div id="toast" class="fixed bottom-4 right-4 bg-emerald-600 text-white px-4 py-2 rounded-lg shadow-lg transform translate-y-full opacity-0 transition-all duration-300 z-50">
+        Copied to clipboard!
+    </div>
+
+    <script>
+    // Content data
+    const contentData = {
+        strategy: `# 30-Day Executive Content Strategy
+## HairDAO + Executive Team
+
+*Generated: January 26, 2026*
+*Accounts: @HairDAO_, @andrew_bakst, @VerbinnenAndrew, @AJTraxler*
+
+---
+
+## 🎯 Strategic Overview
+
+### The Goal
+Build HairDAO into the undisputed voice of hair loss innovation. Position executives as thought leaders in DeSci, biotech, and patient empowerment.
+
+### Key Insight from @HairDAO_ Data
+| Content Type | Avg Engagement | Reach |
+|--------------|----------------|-------|
+| Memes/Humor | **357 likes** | High |
+| Promo Codes | 19 likes | **231K views** |
+| Product Drops | 10-12 likes | Medium |
+| Research/Educational | 0-12 likes | Low |
+
+**Takeaway:** Lead with entertainment, follow with education, close with conversion.
+
+---
+
+## 📋 Account Roles
+
+### @HairDAO_ (Brand Account)
+- **Voice:** Bold, irreverent, meme-forward
+- **Content Mix:** 40% memes, 30% product/promos, 20% research, 10% community
+- **Posting Frequency:** 2-3x daily
+- **Best Times:** 8am, 12pm, 6pm EST (test and iterate)
+
+### @andrew_bakst (Founder)
+- **Voice:** Visionary, contrarian, mission-driven
+- **Content Mix:** 40% takes/opinions, 30% behind-scenes, 20% industry commentary, 10% personal
+- **Posting Frequency:** 1-2x daily
+- **Role:** The face. Hot takes on healthcare, NIH, regulation, patient rights.
+
+### @VerbinnenAndrew (Co-founder/Science)
+- **Voice:** Expert, accessible, educational
+- **Content Mix:** 50% science explainers, 30% research updates, 20% product deep-dives
+- **Posting Frequency:** 1x daily
+- **Role:** The brain. Makes complex science digestible.
+
+### @AJTraxler (Executive)
+- **Voice:** Operational, community-focused, transparent
+- **Content Mix:** 40% community updates, 30% behind-scenes, 20% wins/milestones, 10% personal
+- **Posting Frequency:** 1x daily
+- **Role:** The builder. Shows the work getting done.
+
+---
+
+## 📅 Weekly Themes
+
+| Week | Theme | Focus |
+|------|-------|-------|
+| Week 1 | "The Problem is Bigger Than You Think" | Foundation, awareness |
+| Week 2 | "We're Not Just Talking - We're Building" | Authority, credibility |
+| Week 3 | "Join the Movement" | Community, engagement |
+| Week 4 | "Take Action" | Conversion, momentum |
+
+---
+
+## 🔥 Content Templates
+
+### 1. The Friday Night Series (@HairDAO_)
+Format: "It's Friday night. [Hair-related question/observation]? [Advice/wisdom] 🔑"
+Example: "It's Friday night. Do you have your hair? Stay prepared, young padewan 🔑"
+Why it works: Ritualistic, relatable, memeable
+
+### 2. The Hot Take Thread (@andrew_bakst)
+Format: "[Controversial statement]. Here's why: [5-7 tweet thread with evidence]"
+Example: "The FDA approval process kills more people than it saves. Here's why:"
+Why it works: Engagement bait + education
+
+### 3. The Science Explainer (@VerbinnenAndrew)
+Format: "Most people don't understand [concept]. Let me explain: [simple breakdown]"
+Example: "Most people don't understand DHT. Let me explain in 60 seconds."
+Why it works: Positions as expert, provides value
+
+### 4. The Behind-the-Scenes (@AJTraxler)
+Format: "[What we're building/doing] + [real photo/screenshot]"
+Example: "What building a DeSci company actually looks like: [messy whiteboard photo]"
+Why it works: Authenticity, shows real work
+
+### 5. The Promo Drop (@HairDAO_)
+Format: "[Value prop]. Use code [CODE] for [discount]. [Link]"
+Example: "40% off all Hair Growth treatments. Code: 40OFFHAIR. Link in bio."
+Why it works: Clear CTA, drives massive reach (231K+ views)
+
+---
+
+## 📊 Metrics to Track
+
+### Weekly
+- Impressions per account
+- Engagement rate (likes + replies + RTs / impressions)
+- Follower growth
+- Top performing post
+
+### Monthly
+- Total reach
+- Click-through to site
+- Conversions from Twitter
+- Sentiment analysis
+
+---
+
+## 🎯 30-Day Goals
+
+- @HairDAO_: +2,000 followers, 500K total impressions
+- @andrew_bakst: +500 followers, establish as DeSci voice
+- @VerbinnenAndrew: +300 followers, 10 educational posts
+- @AJTraxler: +200 followers, community engagement up 50%`,
+
+        week1: `# Week 1 Posts - Ready to Post
+## Theme: "The Problem is Bigger Than You Think"
+
+---
+
+# DAY 1 (Monday)
+
+## Post 1.1 - @HairDAO_
+**Time:** 8:00 AM EST
+
+\`\`\`
+POV: You discover your hairline on a Zoom call
+
+Your confidence: 📉📉📉
+Your camera: suddenly "broken"
+Your hat collection: 📈📈📈
+
+We're fixing this. One follicle at a time.
+\`\`\`
+
+---
+
+## Post 1.2 - @andrew_bakst  
+**Time:** 10:00 AM EST | **Type:** Thread
+
+\`\`\`
+The hair loss industry is broken.
+
+Here's why I'm fixing it 🧵
+\`\`\`
+
+**Thread:**
+\`\`\`
+1/ 80 million Americans experience hair loss.
+
+The "solutions"?
+- $10K transplants
+- Pills that kill your libido
+- Scam supplements with stock photos
+
+It's 2026. We can do better.
+\`\`\`
+
+\`\`\`
+2/ The pharma playbook:
+
+Step 1: Patent a molecule
+Step 2: Charge $300/month
+Step 3: Fight generics for 20 years
+Step 4: Spend more on marketing than R&D
+
+Meanwhile, actual innovation dies in academic papers nobody reads.
+\`\`\`
+
+\`\`\`
+3/ Hair loss research is STUCK.
+
+The last major FDA-approved treatment? 1997.
+
+That's not because we ran out of ideas. It's because the incentives are broken.
+
+Why fund a cure when you can sell a treatment forever?
+\`\`\`
+
+\`\`\`
+4/ Enter DeSci.
+
+Decentralized science flips the model:
+→ Community-funded research
+→ Open-source findings
+→ Patients become stakeholders
+→ Aligned incentives
+
+We're not waiting for Big Pharma to save us.
+\`\`\`
+
+\`\`\`
+5/ @HairDAO_ isn't just a company.
+
+It's a bet that patients deserve:
+- Transparency on what works
+- Access without gatekeepers  
+- A seat at the research table
+
+We're building the future of hair science. In public.
+\`\`\`
+
+\`\`\`
+6/ This is personal.
+
+I watched my dad lose his hair and his confidence. Watched friends try everything and get scammed.
+
+Hair loss isn't vanity. It's identity. And it deserves real solutions.
+
+That's why I do this.
+\`\`\`
+
+\`\`\`
+7/ If you're tired of the bullshit:
+
+- Follow @HairDAO_ for updates
+- Check our research at [link]
+- Join the community
+
+We're just getting started.
+
+And no, we won't ask you to buy a $200 shampoo that doesn't work.
+\`\`\`
+
+---
+
+## Post 1.3 - @VerbinnenAndrew
+**Time:** 12:00 PM EST | **Type:** Thread
+
+\`\`\`
+Most people don't understand DHT.
+
+Let me explain in 60 seconds:
+
+DHT (dihydrotestosterone) is testosterone's angrier cousin.
+
+It binds to hair follicles and slowly strangles them. Not because it's "bad" - your body just doesn't know the difference between puberty and pattern baldness.
+
+Here's what actually happens 👇
+\`\`\`
+
+\`\`\`
+Your hair has a growth cycle:
+→ Anagen (growing): 2-7 years
+→ Catagen (transition): 2 weeks
+→ Telogen (resting): 3 months
+
+DHT shortens anagen phase. 
+
+Each cycle, your hair grows back thinner. Shorter. Until it doesn't grow back at all.
+
+This is called follicular miniaturization.
+\`\`\`
+
+\`\`\`
+The kicker?
+
+Not everyone's follicles are sensitive to DHT.
+
+It's genetic. Your beard follicles LOVE DHT. Your scalp follicles might hate it.
+
+Same hormone. Different receptors. Unfair lottery.
+\`\`\`
+
+\`\`\`
+What works:
+
+• Blocking DHT production (finasteride)
+• Blocking DHT at the follicle (topicals)
+• Stimulating growth regardless (minoxidil)
+• Regenerating follicles (where we're innovating)
+
+The future isn't just blocking damage. It's reversing it.
+
+That's what @HairDAO_ is building toward.
+\`\`\`
+
+---
+
+# DAY 2 (Tuesday)
+
+## Post 2.1 - @HairDAO_
+**Time:** 8:00 AM EST
+
+\`\`\`
+We built an AI that writes patent applications for hair loss treatments.
+
+Her name is Lexy.
+
+She's read every hair science patent ever filed. Every clinical trial. Every rejected FDA application.
+
+This is what AI should actually be used for.
+
+Not chatbots. Cures.
+\`\`\`
+
+---
+
+## Post 2.2 - @andrew_bakst
+**Time:** 11:00 AM EST | **Type:** Hot Take
+
+\`\`\`
+Hot take: The FDA approval process kills more people than it saves.
+
+A drug that could help millions sits in review for 12 years while people suffer.
+
+"Safety" has become a shield for bureaucratic paralysis.
+
+We need reform. Yesterday.
+
+(Yes, I know this is controversial. CMV.)
+\`\`\`
+
+---
+
+## Post 2.3 - @AJTraxler
+**Time:** 2:00 PM EST
+
+\`\`\`
+What building a DeSci company actually looks like:
+
+- 47 open browser tabs
+- A whiteboard that makes sense to exactly 3 people
+- Slack messages at 2am about follicle density
+- More coffee than any human should consume
+- Random moments of "holy shit this might actually work"
+
+Worth it.
+\`\`\`
+
+---
+
+# DAY 3 (Wednesday)
+
+## Post 3.1 - @HairDAO_
+**Time:** 12:00 PM EST
+
+\`\`\`
+8 months on our protocol.
+
+Left: "I've tried everything"
+Right: "Wait... is that actually working?"
+
+(Posted with permission. Real member. Real results. No filters.)
+
+If you want the same protocol, link in bio.
+\`\`\`
+
+---
+
+## Post 3.2 - @VerbinnenAndrew
+**Time:** 10:00 AM EST | **Type:** Thread
+
+\`\`\`
+New paper dropped that everyone's missing:
+
+"Wnt/β-catenin Signaling in Hair Follicle Regeneration"
+
+TL;DR: We might be able to wake up dormant follicles, not just protect existing ones.
+
+This is a big deal. Here's why 🧵
+\`\`\`
+
+---
+
+## Post 3.3 - @andrew_bakst
+**Time:** 4:00 PM EST
+
+\`\`\`
+Elon tweets about neural interfaces while ignoring that we still can't reliably regrow hair.
+
+We've been to the moon. We have AI. We cured Hepatitis C.
+
+But 2024's hair loss treatments are basically the same as 1997's.
+
+This market is begging to be disrupted.
+\`\`\`
+
+---
+
+# DAY 4 (Thursday)
+
+## Post 4.1 - @HairDAO_
+**Time:** 8:00 AM EST
+
+\`\`\`
+Stages of hair loss acceptance:
+
+1. "It's just the lighting"
+2. "My hairline has always been like this"
+3. "Hats are cool actually"
+4. *discovers HairDAO*
+5. "Why didn't I start this sooner"
+
+Skip to step 4. Trust us.
+\`\`\`
+
+---
+
+## Post 4.2 - @AJTraxler
+**Time:** 1:00 PM EST
+
+\`\`\`
+Community spotlight 🔦
+
+Shoutout to @[member handle] who's been in our Discord since day one.
+
+They've:
+→ Tested 3 protocols and shared detailed logs
+→ Helped 50+ newbies get started
+→ Never asked for anything in return
+
+This is what real community looks like. We see you. 🫡
+\`\`\`
+
+---
+
+## Post 4.3 - @VerbinnenAndrew
+**Time:** 11:00 AM EST
+
+\`\`\`
+MYTH: Hair loss products need to be used forever or your hair falls out immediately
+
+FACT: Some treatments maintain; some regenerate. Know the difference.
+
+Minoxidil? Use or lose.
+Finasteride? Gradual return to baseline.
+Regenerative therapies? We're working on permanent solutions.
+
+The future isn't lifelong dependency.
+\`\`\`
+
+---
+
+# DAY 5 (Friday) 🔥
+
+## Post 5.1 - @HairDAO_ (FRIDAY SERIES)
+**Time:** 6:00 PM EST ⚡ CRITICAL
+
+\`\`\`
+It's Friday night.
+
+You've been wearing the same hat for 3 weeks straight.
+
+Your barber asks "the usual?" and you panic because there's less usual every month.
+
+Take the protocol. Protect what's left. Build what's possible.
+
+The weekend can wait. Your follicles can't. 🔑
+\`\`\`
+
+---
+
+## Post 5.2 - @andrew_bakst
+**Time:** 2:00 PM EST
+
+\`\`\`
+People ask why I started a hair loss company.
+
+Here's the real answer:
+
+My roommate freshman year cried in the bathroom over his hairline. He was 19.
+
+Society told him it was vanity to care. To "just shave it." To "be confident."
+
+Bullshit.
+
+You're allowed to want your hair back.
+\`\`\`
+
+---
+
+## Post 5.3 - @VerbinnenAndrew
+**Time:** 10:00 AM EST
+
+\`\`\`
+Weekend reading 📚
+
+If you want to actually understand hair science, start here:
+
+1. "The Biology of Hair Follicles" - Paus & Cotsarelis (foundational)
+
+2. This review on JAK inhibitors for alopecia - [link]
+
+3. @HairDAO_'s research wiki (biased but good) - [link]
+
+Grab a coffee. Get smarter. See you Monday.
+\`\`\`
+
+---
+
+# DAY 6 (Saturday)
+
+## Post 6.1 - @HairDAO_
+**Time:** 10:00 AM EST
+
+\`\`\`
+Saturday hair care tip:
+
+Your pillowcase matters more than you think.
+
+Silk/satin = less friction = less breakage = happier follicles
+
+Takes 10 seconds to swap. Costs $20.
+
+Small edges add up. This is a marathon, not a sprint.
+
+What's your weekend hair routine?
+\`\`\`
+
+*Light engagement day - focus on replies*
+
+---
+
+# DAY 7 (Sunday)
+
+## Post 7.1 - @HairDAO_
+**Time:** 7:00 PM EST
+
+\`\`\`
+Week 1 recap 📊
+
+This week we:
+→ Explained why the industry is broken
+→ Dropped a DHT explainer that actually makes sense
+→ Highlighted real results from real people
+→ Reminded you that Friday nights are for follicle care
+
+Week 2: We show you what we're building.
+
+Stay tuned. Follow if you haven't.
+\`\`\`
+
+---
+
+## Post 7.2 - @andrew_bakst
+**Time:** 8:00 PM EST
+
+\`\`\`
+Sunday thoughts:
+
+Every industry that gets disrupted has the same pattern:
+
+1. Incumbents optimize for profit over outcomes
+2. Customers accept mediocrity as normal
+3. Someone builds the obvious better thing
+4. Everyone asks "why didn't this exist before?"
+
+Hair loss is at step 3.
+
+We're the obvious better thing.
+\`\`\`
+
+---
+
+# POSTING SCHEDULE SUMMARY
+
+| Day | @HairDAO_ | @andrew_bakst | @VerbinnenAndrew | @AJTraxler |
+|-----|-----------|---------------|------------------|------------|
+| Mon | 8am - Zoom meme | 10am - Industry thread | 12pm - DHT explainer | - |
+| Tue | 8am - Lexy AI | 11am - FDA hot take | - | 2pm - BTS photo |
+| Wed | 12pm - Testimonial | 4pm - Quote tweet | 10am - Research drop | - |
+| Thu | 8am - Stages meme | - | 11am - Myth vs Fact | 1pm - Community spotlight |
+| Fri | 6pm - Friday Night 🔥 | 2pm - Personal story | 10am - Weekend reading | - |
+| Sat | 10am - Hair tip | Engage only | Engage only | Engage only |
+| Sun | 7pm - Week recap | 8pm - Sunday thoughts | Engage only | Engage only |`,
+
+        weeks24: `# Weeks 2-4: Ready-to-Post Content
+## HairDAO Executive Content Calendar
+
+*~60 posts across 21 days*
+
+---
+
+# 📅 WEEK 2: Authority (Days 8-14)
+## Theme: "We're Not Just Talking - We're Building"
+
+---
+
+## Day 8 (Monday) - Product & Vision
+
+### @HairDAO_ (8am EST)
+\`\`\`
+Tired of waiting for Big Pharma to care about your hair?
+
+We're building the future of hair loss treatment—open source, community-driven, and actually affordable.
+
+New feature drop: AI-powered treatment matching 🧬
+
+Try it → [link]
+\`\`\`
+
+### @HairDAO_ (6pm EST)
+\`\`\`
+The hair loss industry doesn't want you to know this:
+
+Most "breakthrough" treatments are just repackaged minoxidil with a 500% markup.
+
+We're different. And we can prove it.
+\`\`\`
+
+### @andrew_bakst (12pm EST) - Thread
+\`\`\`
+1/ DeSci isn't just a buzzword. It's how we fix broken healthcare.
+
+Here's why decentralized research matters for hair loss (and everything else):
+
+🧵👇
+\`\`\`
+
+---
+
+## Day 9 (Tuesday) - Meme Day + Metrics
+
+### @HairDAO_ (8am EST)
+\`\`\`
+Big Pharma developing hair loss treatments:
+
+"We need 15 years, $3 billion, and we might have something that works 30% of the time."
+
+HairDAO:
+
+"We crowdfunded it, published the research, and you can buy it now."
+
+Different breed.
+\`\`\`
+
+### @AJTraxler (12pm EST)
+\`\`\`
+Last month at HairDAO:
+
+✅ Shipped 3 product updates
+✅ Onboarded 2,400 new users
+✅ Funded 2 new research initiatives
+✅ Hired 3 team members (more coming)
+
+Building in public means you see the real numbers.
+
+What should we focus on next?
+\`\`\`
+
+---
+
+## Day 10 (Wednesday) - PROMO DROP 🔥
+
+### @HairDAO_ (8am EST)
+\`\`\`
+🚨 24-HOUR FLASH SALE 🚨
+
+40% off ALL hair growth treatments.
+
+Code: AUTHORITY40
+
+This is the lowest price we've ever offered.
+
+Link in bio. Set your alarms. Don't miss this.
+\`\`\`
+
+### @HairDAO_ (12pm EST)
+\`\`\`
+REMINDER: 40% off ends at midnight.
+
+Code: AUTHORITY40
+
+Over 1,200 people have already claimed it.
+
+Your hair won't wait for the next sale 🔑
+\`\`\`
+
+### @HairDAO_ (8pm EST)
+\`\`\`
+⏰ 4 HOURS LEFT
+
+40% off with code AUTHORITY40
+
+After midnight, it's back to full price.
+
+This is your sign.
+\`\`\`
+
+---
+
+## Day 12 (Friday) - FRIDAY SERIES
+
+### @HairDAO_ (6pm EST)
+\`\`\`
+It's Friday night somewhere.
+
+Do you have your treatment protocol dialed in?
+
+The weekend is for rest. Your follicles work 24/7.
+
+Stay consistent, young padawan 🔑
+\`\`\`
+
+### @andrew_bakst (12pm EST)
+\`\`\`
+Unpopular opinion:
+
+Most "hair loss experts" on social media are just affiliate marketers with a ring light.
+
+They recommend whatever pays the highest commission, not what actually works.
+
+We publish our research. We show our data. We let results speak.
+
+That's the difference.
+\`\`\`
+
+---
+
+# 📅 WEEK 3: Community (Days 15-21)
+## Theme: "Join the Movement"
+
+---
+
+## Day 15 (Monday) - Community Activation
+
+### @HairDAO_ (8am EST)
+\`\`\`
+Show us your routine 🧴
+
+Drop a photo of your current hair care setup.
+
+Best one gets featured + free product.
+
+We want to see those bathroom shelfies.
+\`\`\`
+
+### @andrew_bakst (12pm EST) - Thread
+\`\`\`
+1/ Why patient empowerment matters:
+
+A thread 🧵
+
+The traditional model:
+- Doctor prescribes
+- You comply
+- No questions asked
+
+The problem? Your doctor has 15 minutes and 30 other patients.
+\`\`\`
+
+---
+
+## Day 16 (Tuesday) - Poll Day
+
+### @HairDAO_ (8am EST)
+\`\`\`
+Poll time 📊
+
+What's your biggest hair loss frustration?
+
+🔘 Cost of treatments
+🔘 Conflicting information
+🔘 Slow results
+🔘 Side effect fears
+\`\`\`
+
+### @HairDAO_ (6pm EST)
+\`\`\`
+The poll results are in:
+
+67% of you said COST is the biggest frustration.
+
+We hear you.
+
+That's literally why HairDAO exists.
+
+Treatments that work. Prices that don't bankrupt you.
+\`\`\`
+
+---
+
+## Day 19 (Friday) - Friday Series
+
+### @HairDAO_ (6pm EST)
+\`\`\`
+It's Friday night in some timezone.
+
+Have you tracked your progress this week?
+
+Consistency is the only "secret" that actually works.
+
+Stay patient, young padawan 🔑
+\`\`\`
+
+---
+
+# 📅 WEEK 4: Conversion (Days 22-30)
+## Theme: "Take Action"
+
+---
+
+## Day 22 (Monday) - TEASER
+
+### @HairDAO_ (8am EST)
+\`\`\`
+🚨 BIG ANNOUNCEMENT INCOMING 🚨
+
+Tomorrow at 12pm EST.
+
+This changes everything.
+
+Turn on notifications.
+\`\`\`
+
+---
+
+## Day 23 (Tuesday) - PRODUCT LAUNCH 🚀
+
+### @HairDAO_ (12pm EST)
+\`\`\`
+🚀 INTRODUCING: HairDAO Compound-7
+
+The first community-developed hair loss treatment to outperform minoxidil in head-to-head trials.
+
+23% more regrowth
+40% faster results
+Zero reported sexual side effects
+
+This is what DeSci looks like.
+
+Available now → [link]
+\`\`\`
+
+### @HairDAO_ (1pm EST)
+\`\`\`
+The numbers:
+
+📊 18-month development
+📊 423 trial participants
+📊 23% better regrowth vs minoxidil
+📊 67% saw visible results in 3 months
+
+And the best part?
+
+It costs less than what you're paying now.
+
+Code: LAUNCH30 for 30% off
+\`\`\`
+
+### @andrew_bakst (12pm EST)
+\`\`\`
+This is the day I've been working toward for 3 years.
+
+Compound-7 isn't just a product.
+
+It's proof that patients can out-innovate pharma.
+
+We funded this ourselves.
+We ran the trials ourselves.
+We're bringing it to you at a price that makes sense.
+
+No VC exit strategy.
+No pharma markup.
+Just results.
+
+Welcome to the future of medicine.
+\`\`\`
+
+---
+
+## Day 26 (Friday) - Friday Series + Wins
+
+### @HairDAO_ (6pm EST)
+\`\`\`
+Launch week by the numbers:
+
+📈 4,100+ orders
+📈 $380K in sales
+📈 6,200+ new community members
+📈 12 countries served
+📈 0 major issues
+
+Thank you for making this possible.
+\`\`\`
+
+---
+
+## Day 30 (Tuesday) - Gratitude
+
+### @HairDAO_ (8am EST)
+\`\`\`
+Thank you.
+
+30 days ago we committed to showing up every day.
+
+You showed up too.
+
+53,000 strong. Growing every day.
+
+This is just the beginning 💚
+\`\`\`
+
+### @andrew_bakst (12pm EST)
+\`\`\`
+Personal gratitude:
+
+Building HairDAO has been the hardest thing I've ever done.
+
+But every DM from someone who says "this is working"...
+
+Every community member who becomes an advocate...
+
+Every compound we move from idea to reality...
+
+It's worth it.
+
+Thank you for being here.
+\`\`\`
+
+---
+
+# PROMO CODE SCHEDULE
+
+| Week | Day | Code | Discount |
+|------|-----|------|----------|
+| Week 2 | Day 10 | AUTHORITY40 | 40% off (24hr flash) |
+| Week 3 | Day 17 | HAIRDAO20 | 20% ongoing |
+| Week 4 | Day 23 | LAUNCH30 | 30% off (launch) |
+| Week 4 | Day 29 | NEWMONTH20 | 20% off |`,
+
+        videos: `# HairDAO Video Scripts
+
+Educational content for YouTube and TikTok.
+
+---
+
+## Video 1: Everything Wrong with the Hair Loss Industry
+**Platform:** YouTube | **Length:** 5 minutes | **Speaker:** @andrew_bakst
+
+### Hook (first 5 seconds)
+"The hair loss industry made $4 billion last year. You know how much went to actual research? Almost nothing."
+
+### Key Points
+- The money trail: Pharma sells same drugs since 90s, clinics charge $15K for transplants, supplement companies sell useless biotin
+- The research gap: Last FDA-approved treatment was 1997
+- The incentive problem: Cures don't make recurring revenue
+- Why HairDAO exists: Community-funded, open-source research
+
+### CTA
+"Join the HairDAO community. Link in description."
+
+---
+
+## Video 2: DHT Explained in 60 Seconds
+**Platform:** TikTok | **Length:** 60 seconds | **Speaker:** @VerbinnenAndrew
+
+### Hook
+"Your body is literally attacking your hair follicles. Here's why."
+
+### Script
+- 0:00: Hook
+- 0:05: What is DHT (made from testosterone by 5-alpha reductase)
+- 0:18: The problem (DHT binds to follicles, causes miniaturization)
+- 0:32: The timeline (years of gradual shrinking)
+- 0:42: What you can do (finasteride, minoxidil, regenerative)
+- 0:52: The catch (early intervention matters)
+
+### CTA
+"Follow @HairDAO for more science breakdowns."
+
+---
+
+## Video 3: Why Most Hair Loss Treatments Fail
+**Platform:** YouTube | **Length:** 3 minutes | **Speaker:** @VerbinnenAndrew
+
+### Hook
+"90% of people who try hair loss treatments give up within a year."
+
+### Key Points
+1. **Unrealistic expectations** - Top 1% results aren't typical
+2. **The timeline** - 4-6 months minimum, initial shedding normal
+3. **Consistency** - Daily use required, forever
+
+---
+
+## Video 4: The Science Behind Minoxidil
+**Platform:** YouTube | **Length:** 5 minutes | **Speaker:** @VerbinnenAndrew
+
+### Hook
+"Minoxidil was originally a blood pressure medication. Then patients started growing hair in weird places."
+
+### Key Points
+- Originally for blood pressure, hair growth was a side effect
+- Mechanism: Opens potassium channels, extends anagen phase
+- The sulfotransferase factor: 30% are non-responders
+- Topical vs oral: Trade-offs explained
+- Practical advice: Twice daily, 4+ months, generics work the same
+
+---
+
+## Video 5: What Big Pharma Won't Tell You
+**Platform:** YouTube | **Length:** 5 minutes | **Speaker:** @andrew_bakst
+
+### Hook
+"Pharmaceutical companies have known about potential treatments they'll never develop. Here's why."
+
+### Key Points
+- The patent problem (20-year clock, 7-10 years exclusivity)
+- Natural compound problem (can't patent = no funding)
+- Off-label elephant (no one funds trials for expired patents)
+- Combination therapy gap (no company tests competitors together)
+- What HairDAO changes: No patent focus, open-source research
+
+---
+
+## Video 9: Top 5 Hair Loss Myths (TikTok Series)
+
+### Myth #1 - Hats Cause Baldness
+**Hook:** "Your hat is not making you bald."
+Pattern baldness is genetic and hormonal. DHT shrinks follicles. Your hat is fine.
+
+### Myth #2 - More Shampoo = More Hair Loss
+**Hook:** "The hair that falls out in the shower was already dead."
+You lose 50-100 hairs daily naturally. Shampooing just loosens what was already going.
+
+### Myth #3 - Hair Loss Only Comes from Mom's Side
+**Hook:** "Blame both parents."
+200+ genetic variants from both sides.
+
+### Myth #4 - Biotin Supplements Fix Hair Loss
+**Hook:** "If you're not biotin deficient, extra biotin does nothing."
+DHT causes pattern baldness. Biotin doesn't block DHT.
+
+### Myth #5 - Treatments Work Immediately
+**Hook:** "If someone promises fast results, they're lying."
+Real treatments need 4-6 months minimum.
+
+---
+
+## Video 10: The Future of Hair Loss Treatment
+**Platform:** YouTube | **Length:** 5 minutes | **Speakers:** Both
+
+### Topics
+- **Hair Cloning** - Multiplying dermal papilla cells, injecting back
+- **Gene Therapy** - CRISPR to edit DHT sensitivity genes
+- **JAK Inhibitors** - Approved for alopecia areata, promising for AGA
+- **Wnt Pathway Modulators** - Stimulating follicle development
+- **Exosomes** - Cellular messengers, unregulated but promising
+- **What HairDAO focuses on** - Combination therapies, delivery mechanisms`,
+
+        competitors: `# HairDAO Competitor Analysis
+
+---
+
+## 1. HAIR LOSS FOCUSED ACCOUNTS
+
+### @haborolabs - Hims & Hers Health
+**Followers:** ~150K+ | **Posting:** 3-5x/day
+
+**What Works:**
+- Destigmatizing approach to "taboo" men's health topics
+- Millennial-forward aesthetic and humor
+- Strong brand voice that's relatable, not clinical
+
+**HairDAO Opportunity:** Position as community-driven alternative that actually advances science
+
+---
+
+### @getkeeps - Keeps
+**Followers:** ~50K | **Posting:** 1-2x/day
+
+**What Works:**
+- Focus on prevention ("keep what you have")
+- Affordable pricing messaging
+- Simple DTC model communication
+
+**HairDAO Opportunity:** Talk about what comes AFTER finasteride—next-gen treatments
+
+---
+
+### @moraboreplatesmoredates - Derek (MPMD)
+**Followers:** ~500K+ Twitter, 2M+ YouTube
+
+**What Works:**
+- Deep-dive scientific content
+- Honest, no-BS approach
+- Covers experimental treatments (RU58841, etc.)
+- Personal experience sharing
+
+**HairDAO Opportunity:** Be the legitimate, research-backed version of experimental approach
+
+---
+
+## 2. BIOTECH FOUNDERS
+
+### @bryan_johnson - Bryan Johnson
+**Followers:** 1M+ | **Posting:** 5-10x/day
+
+**What Works:**
+- Radical transparency about self-experimentation
+- Compelling "n=1" narrative
+- Documentary-style content journey
+- Challenges conventional wisdom
+
+**HairDAO Opportunity:** Democratize the experimental approach for everyone, not just billionaires
+
+---
+
+## 3. LONGEVITY/BIOHACKING
+
+### @hubaborermanlab - Andrew Huberman
+**Followers:** 5M+ | **Posting:** 1-3x/day
+
+**What Works:**
+- Translates complex neuroscience into protocols
+- Stanford credibility
+- Specific, numbered protocols
+- Scientific citations
+
+**HairDAO Opportunity:** Be the "Huberman Lab" specifically for hair
+
+---
+
+### @PeterAttiaMD - Peter Attia
+**Followers:** 1M+ | **Posting:** 1-2x/day
+
+**What Works:**
+- Highest scientific credibility
+- Deep, nuanced content
+- Evidence-based everything
+
+**HairDAO Opportunity:** Apply Attia-level rigor specifically to hair loss
+
+---
+
+## 4. DESCI ACCOUNTS
+
+### @VitaDAO
+**Followers:** ~50K | **Posting:** 2-5x/day
+
+**What Works:**
+- Clear DeSci category leadership
+- Active governance participation
+- Research project transparency
+- Community treasury updates
+
+**HairDAO Opportunity:** Be the VitaDAO specifically for hair—more focused, more relatable
+
+---
+
+## STRATEGIC RECOMMENDATIONS
+
+### Content Gaps to Fill
+1. **No Huberman for Hair** - Authoritative, protocol-focused, science-deep
+2. **No Democratized Bryan Johnson** - Regular people contributing to research
+3. **DeSci Too Abstract** - Need human impact stories
+4. **Hair Loss Brands Just Sell** - No research contribution angle
+5. **Community But No Organization** - Reddit has community, no governance
+
+### Recommended Positioning
+**"The Huberman Lab Meets VitaDAO for Hair Loss"**
+
+### Content Pillars
+1. **Research Deep-Dives (30%)** - Huberman-style breakdowns
+2. **Community/Governance (25%)** - Treasury updates, AMAs
+3. **Patient Stories (20%)** - Real journeys, before/afters
+4. **Industry Commentary (15%)** - Hot takes, critique
+5. **Memes & Culture (10%)** - Destigmatizing humor`,
+
+        community: `# HairDAO Community Playbook
+
+---
+
+## 1. Twitter Engagement Strategy
+
+### Daily Routine (30 min total)
+
+**Morning Session (15 min)**
+1. Check notifications & reply to mentions
+2. Engage with 3-5 relevant posts from target accounts
+3. Quote tweet or reply to 1 industry news item
+
+**Evening Session (15 min)**
+1. Reply to afternoon mentions
+2. Engage with community posts
+3. Post or schedule next day's content
+
+---
+
+### Reply Templates
+
+**To someone sharing hair loss struggle:**
+\`\`\`
+We see you 🤝 Hair loss affects millions and the solutions haven't kept up with the science. That's exactly why we're funding open research. You're not alone in this.
+\`\`\`
+
+**To research/science content:**
+\`\`\`
+This is exactly the kind of research we need more of. Open science accelerates breakthroughs. We're funding similar work through community governance → [link]
+\`\`\`
+
+**To someone asking "what is HairDAO?":**
+\`\`\`
+We're a decentralized community funding hair loss research 🧬 
+
+Instead of waiting for Big Pharma, we're pooling resources to fund open-source treatments that benefit everyone. 
+
+Check out what we're working on: [link to research page]
+\`\`\`
+
+---
+
+## 2. Discord Management
+
+### Welcome Message
+\`\`\`
+Welcome to HairDAO! 🧬 
+
+You just joined [X,XXX] people working to solve hair loss through open science.
+
+**Quick Start:**
+1️⃣ Introduce yourself in #introductions
+2️⃣ Check #announcements for latest updates
+3️⃣ Join the conversation in #general
+
+LFG 🚀
+\`\`\`
+
+### Weekly Engagement Prompts
+
+**Monday - Share Your Story**
+\`\`\`
+🗓️ MONDAY THREAD
+
+Share your hair journey. Where are you at? What's working? What questions do you have?
+\`\`\`
+
+**Wednesday - Research Wednesday**
+\`\`\`
+🔬 RESEARCH WEDNESDAY
+
+This week we're discussing: [topic]
+
+What questions do you have about [topic]?
+\`\`\`
+
+**Friday - Wins & Vibes**
+\`\`\`
+🎉 FRIDAY WINS
+
+Share something good from this week!
+\`\`\`
+
+---
+
+## 3. DM Templates
+
+### "What is HairDAO?"
+\`\`\`
+Hey! Thanks for reaching out 🙌
+
+Quick version: We're a community funding hair loss research. Instead of waiting for pharma companies, we pool resources and vote on which research gets funded. All results are open-source.
+
+Best place to learn more:
+• Website: [link]
+• Discord: [link]
+\`\`\`
+
+### Partnership Outreach
+\`\`\`
+Hi [Name],
+
+I'm reaching out from HairDAO—we're a decentralized organization funding open-source hair loss research.
+
+We came across your work on [specific research] and were impressed. Our community is actively looking to fund promising research in this space.
+
+Would you be open to a quick call to explore potential collaboration?
+
+Best,
+[Name]
+\`\`\`
+
+---
+
+## 4. Crisis Playbook
+
+### FUD Response Templates
+
+**"It's a scam/rugpull":**
+\`\`\`
+We get the skepticism—crypto has earned it.
+
+Here's our track record:
+• Team is doxxed: [link]
+• Treasury is public: [link]
+• [X] research projects funded: [link]
+
+We're building in public. Judge us by our actions.
+\`\`\`
+
+**"Research will never work":**
+\`\`\`
+Hair loss science has actually made huge progress—the problem is funding and incentives, not possibility.
+
+We're not promising a cure tomorrow. We're funding open research that everyone benefits from.
+\`\`\`
+
+---
+
+## 5. Metrics to Track
+
+### Engagement Rate Benchmarks
+
+**Twitter:**
+| Metric | Good | Excellent |
+|--------|------|-----------|
+| Engagement rate | 2-5% | >5% |
+| Follower growth/week | 2-5% | >5% |
+
+**Discord:**
+| Metric | Good | Excellent |
+|--------|------|-----------|
+| Daily active users | 10-20% | >20% |
+| Messages/day | 150-300 | >300 |
+| Retention (30-day) | 40-60% | >60% |
+
+### Response Time Goals
+| Channel | Target |
+|---------|--------|
+| Twitter mentions | 2 hours |
+| Discord questions | 1 hour |
+| Support tickets | 4 hours |`,
+
+        investor: `# HairDAO Investor & Press Kit
+
+---
+
+## ONE-PAGER
+
+### PROBLEM
+Hair loss affects 50 million Americans, yet 80% of clinical trials fail to recruit enough participants. The NIH's centralized model costs billions while patients wait decades for treatments.
+
+### SOLUTION
+HairDAO is the first decentralized clinical research platform that lets patients own their health data, participate in cutting-edge trials, and share in the IP they help create—all governed by the HAIR token.
+
+### TRACTION
+- Patent filed: T4 (Levothyroxine) topical formulation
+- Platform launched: PlayHair + Anagen telehealth
+- Smart contracts deployed: HAIR token + DataNFT
+- Treatment pipeline: 10+ novel formulations
+
+### THE ASK
+Raising: $500K–$1M Seed Round
+Use: IRB approval, clinical ops, engineering team, first trials
+Target: 10,000 users, 100 trial participants, $500K ARR (Year 1)
+
+---
+
+## MARKET SIZE
+
+| Market | Size |
+|--------|------|
+| Hair loss treatments (Global) | $8.5B (6% CAGR) |
+| Clinical trials industry | $65B |
+| DeSci protocols | $500M+ (10x growth) |
+
+**Year 1 Target:**
+- 10,000 users
+- 100 active trial participants
+- 500 treatment subscribers
+- $500K ARR
+
+---
+
+## BUSINESS MODEL
+
+### Revenue Streams
+| Stream | Year 1 | % |
+|--------|--------|---|
+| Treatment Subscriptions | $300K | 60% |
+| Trial Sponsorships | $150K | 30% |
+| Platform Fees | $30K | 6% |
+| Data Licensing | $20K | 4% |
+
+### Unit Economics
+- Customer LTV: $600 (12mo × $50)
+- CAC: $150
+- LTV:CAC: 4:1 ✓
+- Gross Margin: 60%
+
+---
+
+## COMPETITIVE ADVANTAGES
+
+1. **We fund actual R&D** (not just sell existing treatments)
+2. **Community governed** (not corporate decisions)
+3. **Open source results** (not locked behind patents)
+4. **Patients as stakeholders** (not just customers)
+5. **Novel approaches** (Twist-1, TRH, thyroid hormones)
+
+---
+
+## KEY MESSAGES
+
+1. **The Big Idea:** "HairDAO is the first platform where clinical trial participants own their health data and share in the discoveries they help create."
+
+2. **The Problem:** "80% of clinical trials fail to recruit enough participants. Patients contribute their bodies to science and receive nothing in return."
+
+3. **The Solution:** "We align incentives with token rewards, data ownership as NFTs, and governance rights over research priorities."
+
+4. **Why Hair Loss:** "50 million Americans, high motivation, visual results. Prove the model here, expand everywhere."
+
+5. **The Ask:** "We're raising $500K-$1M to launch first trials and prove the model works."
+
+---
+
+## CONTACT
+
+**General:** hello@hairdao.xyz
+**Investors:** investors@hairdao.xyz
+**Press:** press@hairdao.xyz
+
+**Websites:**
+- Research: hairdao.xyz
+- Telehealth: anagen.xyz
+
+**Social:**
+- Twitter: @hairdao
+- Discord: discord.gg/hairdao`
+    };
+
+    // Extract tweets from content for tweet view
+    function extractTweets(content) {
+        const tweets = [];
+        const lines = content.split('\n');
+        let currentTweet = null;
+        let inCodeBlock = false;
+        let codeContent = '';
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            
+            // Detect account
+            if (line.match(/##.*@(HairDAO_|andrew_bakst|VerbinnenAndrew|AJTraxler)/)) {
+                if (currentTweet && currentTweet.content) {
+                    tweets.push(currentTweet);
+                }
+                const accountMatch = line.match(/@(HairDAO_|andrew_bakst|VerbinnenAndrew|AJTraxler)/);
+                const timeMatch = lines[i+1]?.match(/\*\*Time:\*\*\s*([^|]+)/);
+                const typeMatch = lines[i+1]?.match(/\*\*Type:\*\*\s*(\w+)/);
+                currentTweet = {
+                    account: accountMatch ? '@' + accountMatch[1] : '@HairDAO_',
+                    time: timeMatch ? timeMatch[1].trim() : '',
+                    type: typeMatch ? typeMatch[1].trim() : 'post',
+                    content: '',
+                    day: ''
+                };
+            }
+            
+            // Detect day
+            if (line.match(/^#\s*DAY\s*\d+/i) || line.match(/^##\s*Day\s*\d+/i)) {
+                const dayMatch = line.match(/\d+/);
+                if (dayMatch && currentTweet) {
+                    currentTweet.day = 'Day ' + dayMatch[0];
+                }
+            }
+            
+            // Detect code blocks
+            if (line.startsWith('```')) {
+                if (inCodeBlock) {
+                    if (currentTweet && codeContent.trim()) {
+                        currentTweet.content = codeContent.trim();
+                        tweets.push({...currentTweet});
+                        currentTweet.content = '';
+                    }
+                    codeContent = '';
+                }
+                inCodeBlock = !inCodeBlock;
+                continue;
+            }
+            
+            if (inCodeBlock) {
+                codeContent += line + '\n';
+            }
+        }
+        
+        if (currentTweet && currentTweet.content) {
+            tweets.push(currentTweet);
+        }
+        
+        return tweets.filter(t => t.content && t.content.length > 10);
+    }
+
+    // Get posted status from localStorage
+    function getPostedStatus(tweetId) {
+        const posted = localStorage.getItem('hairdao_posted') || '{}';
+        return JSON.parse(posted)[tweetId] || false;
+    }
+
+    function setPostedStatus(tweetId, status) {
+        const posted = JSON.parse(localStorage.getItem('hairdao_posted') || '{}');
+        posted[tweetId] = status;
+        localStorage.setItem('hairdao_posted', JSON.stringify(posted));
+    }
+
+    // Render tweet card
+    function renderTweetCard(tweet, index) {
+        const charCount = tweet.content.length;
+        const isOverLimit = charCount > 280;
+        const tweetId = `tweet_${tweet.account}_${index}`;
+        const isPosted = getPostedStatus(tweetId);
+        
+        const accountColors = {
+            '@HairDAO_': 'emerald',
+            '@andrew_bakst': 'blue',
+            '@VerbinnenAndrew': 'purple',
+            '@AJTraxler': 'pink'
+        };
+        const color = accountColors[tweet.account] || 'emerald';
+        
+        return `
+            <div class="tweet-card bg-zinc-900 border border-zinc-800 rounded-xl p-4 ${isPosted ? 'opacity-60' : ''}" data-tweet-id="${tweetId}">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-${color}-600 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                            ${tweet.account.charAt(1).toUpperCase()}
+                        </div>
+                        <div>
+                            <span class="font-semibold text-${color}-400">${tweet.account}</span>
+                            <div class="text-xs text-zinc-500">${tweet.day} ${tweet.time ? '• ' + tweet.time : ''}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs ${isOverLimit ? 'text-red-400' : 'text-zinc-500'}">${charCount}/280</span>
+                        ${tweet.type === 'thread' ? '<span class="text-xs bg-purple-600/30 text-purple-300 px-2 py-0.5 rounded">Thread</span>' : ''}
+                    </div>
+                </div>
+                <div class="text-zinc-300 whitespace-pre-wrap mb-4 text-sm leading-relaxed">${tweet.content}</div>
+                <div class="flex items-center justify-between pt-3 border-t border-zinc-800">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" ${isPosted ? 'checked' : ''} onchange="togglePosted('${tweetId}')" class="w-4 h-4 rounded bg-zinc-800 border-zinc-600 text-emerald-500 focus:ring-emerald-500">
+                        <span class="text-xs text-zinc-500">Posted</span>
+                    </label>
+                    <button onclick="copyTweet(this)" data-content="${tweet.content.replace(/"/g, '&quot;')}" class="flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    function togglePosted(tweetId) {
+        const current = getPostedStatus(tweetId);
+        setPostedStatus(tweetId, !current);
+        const card = document.querySelector(`[data-tweet-id="${tweetId}"]`);
+        if (card) {
+            card.classList.toggle('opacity-60', !current);
+        }
+    }
+
+    function copyTweet(btn) {
+        const content = btn.dataset.content.replace(/&quot;/g, '"');
+        navigator.clipboard.writeText(content);
+        showToast();
+    }
+
+    function showToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('translate-y-full', 'opacity-0');
+        setTimeout(() => {
+            toast.classList.add('translate-y-full', 'opacity-0');
+        }, 2000);
+    }
+
+    // Render home dashboard
+    function renderHome() {
+        const week1Tweets = extractTweets(contentData.week1);
+        const weeks24Tweets = extractTweets(contentData.weeks24);
+        const totalPosts = week1Tweets.length + weeks24Tweets.length;
+        
+        return `
+            <div class="fade-in">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-emerald-400 mb-2">HairDAO Content Dashboard</h1>
+                    <p class="text-zinc-400">30-day executive content strategy ready for execution</p>
+                </div>
+                
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-gradient-to-br from-emerald-900/50 to-emerald-950/50 border border-emerald-800/50 rounded-xl p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-emerald-300/70 text-sm mb-1">Total Posts Ready</p>
+                                <p class="text-4xl font-bold text-emerald-400">${totalPosts}+</p>
+                            </div>
+                            <div class="w-12 h-12 bg-emerald-600/30 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-red-900/50 to-red-950/50 border border-red-800/50 rounded-xl p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-red-300/70 text-sm mb-1">Video Scripts</p>
+                                <p class="text-4xl font-bold text-red-400">10</p>
+                            </div>
+                            <div class="w-12 h-12 bg-red-600/30 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-blue-900/50 to-blue-950/50 border border-blue-800/50 rounded-xl p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-blue-300/70 text-sm mb-1">Documents</p>
+                                <p class="text-4xl font-bold text-blue-400">7</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-600/30 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Account Overview -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 mb-8">
+                    <h2 class="text-xl font-semibold text-emerald-400 mb-4">Account Roles</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-start gap-3 p-3 bg-zinc-800/50 rounded-lg">
+                            <div class="w-10 h-10 bg-emerald-600 rounded-full flex items-center justify-center text-white font-bold">H</div>
+                            <div>
+                                <p class="font-semibold text-emerald-400">@HairDAO_</p>
+                                <p class="text-sm text-zinc-400">Bold, irreverent, meme-forward • 2-3x daily</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-zinc-800/50 rounded-lg">
+                            <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">A</div>
+                            <div>
+                                <p class="font-semibold text-blue-400">@andrew_bakst</p>
+                                <p class="text-sm text-zinc-400">Visionary, contrarian • 1-2x daily</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-zinc-800/50 rounded-lg">
+                            <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold">V</div>
+                            <div>
+                                <p class="font-semibold text-purple-400">@VerbinnenAndrew</p>
+                                <p class="text-sm text-zinc-400">Expert, educational • 1x daily</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3 p-3 bg-zinc-800/50 rounded-lg">
+                            <div class="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center text-white font-bold">A</div>
+                            <div>
+                                <p class="font-semibold text-pink-400">@AJTraxler</p>
+                                <p class="text-sm text-zinc-400">Operational, community-focused • 1x daily</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Start -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 mb-8">
+                    <h2 class="text-xl font-semibold text-emerald-400 mb-4">🚀 Quick Start</h2>
+                    <ol class="list-decimal list-inside space-y-3 text-zinc-300">
+                        <li>Review the <button onclick="showSection('strategy')" class="text-emerald-400 underline">Content Strategy</button> for account roles and themes</li>
+                        <li>Start with <button onclick="showSection('week1')" class="text-emerald-400 underline">Week 1 Posts</button> - copy-paste ready</li>
+                        <li>Use the search and filters above to find specific content</li>
+                        <li>Mark posts as "Posted" to track progress (saved locally)</li>
+                        <li>Reference <button onclick="showSection('competitors')" class="text-emerald-400 underline">Competitor Analysis</button> for positioning</li>
+                    </ol>
+                </div>
+                
+                <!-- Weekly Themes -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+                    <h2 class="text-xl font-semibold text-emerald-400 mb-4">📅 30-Day Themes</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 border border-zinc-700 rounded-lg">
+                            <p class="text-sm text-zinc-500 mb-1">Week 1</p>
+                            <p class="font-semibold text-purple-400">"The Problem is Bigger Than You Think"</p>
+                            <p class="text-xs text-zinc-500 mt-1">Foundation & awareness</p>
+                        </div>
+                        <div class="p-4 border border-zinc-700 rounded-lg">
+                            <p class="text-sm text-zinc-500 mb-1">Week 2</p>
+                            <p class="font-semibold text-blue-400">"We're Not Just Talking - We're Building"</p>
+                            <p class="text-xs text-zinc-500 mt-1">Authority & credibility</p>
+                        </div>
+                        <div class="p-4 border border-zinc-700 rounded-lg">
+                            <p class="text-sm text-zinc-500 mb-1">Week 3</p>
+                            <p class="font-semibold text-cyan-400">"Join the Movement"</p>
+                            <p class="text-xs text-zinc-500 mt-1">Community & engagement</p>
+                        </div>
+                        <div class="p-4 border border-zinc-700 rounded-lg">
+                            <p class="text-sm text-zinc-500 mb-1">Week 4</p>
+                            <p class="font-semibold text-emerald-400">"Take Action"</p>
+                            <p class="text-xs text-zinc-500 mt-1">Conversion & momentum</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Render tweet grid view
+    function renderTweetGrid(section) {
+        const tweets = extractTweets(contentData[section]);
+        if (tweets.length === 0) return '';
+        
+        return `
+            <div class="mb-6 flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-emerald-400">📱 Tweet Preview Cards</h3>
+                <span class="text-sm text-zinc-500">${tweets.length} posts</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                ${tweets.map((t, i) => renderTweetCard(t, i)).join('')}
+            </div>
+            <hr class="border-zinc-800 my-8">
+            <h3 class="text-lg font-semibold text-emerald-400 mb-4">📄 Full Document</h3>
+        `;
+    }
+
+    // Show section
+    function showSection(section) {
+        // Update sidebar
+        document.querySelectorAll('.sidebar-link').forEach(link => {
+            link.classList.remove('active');
+            if (link.dataset.section === section) {
+                link.classList.add('active');
+            }
+        });
+        
+        const contentEl = document.getElementById('content');
+        
+        if (section === 'home') {
+            contentEl.innerHTML = renderHome();
+        } else {
+            const content = contentData[section];
+            const hasTweets = section === 'week1' || section === 'weeks24';
+            
+            contentEl.innerHTML = `
+                <div class="fade-in">
+                    ${hasTweets ? renderTweetGrid(section) : ''}
+                    <div class="prose prose-invert max-w-none">
+                        ${marked.parse(content)}
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Close mobile sidebar
+        if (window.innerWidth < 768) {
+            toggleSidebar();
+        }
+        
+        // Scroll to top
+        document.getElementById('content').scrollTo(0, 0);
+    }
+
+    // Toggle sidebar
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('-translate-x-full');
+    }
+
+    // Search functionality
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase();
+        const accountFilter = document.getElementById('accountFilter').value;
+        
+        if (query.length < 2 && !accountFilter) {
+            showSection('home');
+            return;
+        }
+        
+        // Search all content
+        let results = [];
+        Object.keys(contentData).forEach(key => {
+            if (contentData[key].toLowerCase().includes(query)) {
+                results.push({
+                    section: key,
+                    content: contentData[key]
+                });
+            }
+        });
+        
+        // Also search tweets
+        const allTweets = [
+            ...extractTweets(contentData.week1),
+            ...extractTweets(contentData.weeks24)
+        ];
+        
+        let filteredTweets = allTweets.filter(t => {
+            const matchesQuery = !query || t.content.toLowerCase().includes(query);
+            const matchesAccount = !accountFilter || t.account === accountFilter;
+            return matchesQuery && matchesAccount;
+        });
+        
+        const contentEl = document.getElementById('content');
+        if (filteredTweets.length > 0) {
+            contentEl.innerHTML = `
+                <div class="fade-in">
+                    <h2 class="text-xl font-semibold text-emerald-400 mb-4">
+                        Search Results: ${filteredTweets.length} tweets found
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        ${filteredTweets.map((t, i) => renderTweetCard(t, i)).join('')}
+                    </div>
+                </div>
+            `;
+        } else {
+            contentEl.innerHTML = `
+                <div class="fade-in text-center py-12">
+                    <p class="text-zinc-500">No results found for "${query}"</p>
+                </div>
+            `;
+        }
+    });
+
+    // Filter listeners
+    document.getElementById('accountFilter').addEventListener('change', function() {
+        document.getElementById('searchInput').dispatchEvent(new Event('input'));
+    });
+
+    document.getElementById('typeFilter').addEventListener('change', function() {
+        document.getElementById('searchInput').dispatchEvent(new Event('input'));
+    });
+
+    // Make functions global
+    window.showSection = showSection;
+    window.toggleSidebar = toggleSidebar;
+    window.togglePosted = togglePosted;
+    window.copyTweet = copyTweet;
+
+    // Initialize
+    showSection('home');
+
+    // Handle resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth >= 768) {
+            document.getElementById('sidebar').classList.remove('-translate-x-full');
+        }
+    });
+    </script>
+</body>
+</html>
