@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <title>Anagen - Before/After Reveal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 1080px;
+            height: 1920px;
+            background: #F5F5F3;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 80px 60px 40px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 42px;
+            font-weight: 800;
+            color: #0D9488;
+            letter-spacing: -1px;
+        }
+
+        .title {
+            font-size: 64px;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-top: 40px;
+        }
+
+        .reveal-container {
+            position: relative;
+            width: 920px;
+            height: 920px;
+            margin: 60px auto;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 200px;
+        }
+
+        .before-layer {
+            background: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 100%);
+            z-index: 1;
+        }
+
+        .after-layer {
+            background: linear-gradient(135deg, #0D9488 0%, #14b8a6 100%);
+            z-index: 2;
+            clip-path: inset(0 100% 0 0);
+            animation: reveal 3s ease-in-out forwards 1s;
+        }
+
+        .divider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            background: white;
+            z-index: 3;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            animation: slideDivider 3s ease-in-out forwards 1s;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .divider::before {
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .labels {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            z-index: 4;
+        }
+
+        .label {
+            flex: 1;
+            padding: 40px;
+            text-align: center;
+            font-size: 36px;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .label-before {
+            background: rgba(0, 0, 0, 0.6);
+            animation: fadeLabel 0.5s ease forwards 0.5s;
+            opacity: 0;
+        }
+
+        .label-after {
+            background: rgba(13, 148, 136, 0.9);
+            animation: fadeLabel 0.5s ease forwards 2.5s;
+            opacity: 0;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            padding: 60px;
+        }
+
+        .stat {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .stat:nth-child(1) { animation: fadeUp 0.6s ease forwards 3.5s; }
+        .stat:nth-child(2) { animation: fadeUp 0.6s ease forwards 3.7s; }
+        .stat:nth-child(3) { animation: fadeUp 0.6s ease forwards 3.9s; }
+
+        .stat-value {
+            font-size: 72px;
+            font-weight: 900;
+            color: #0D9488;
+        }
+
+        .stat-label {
+            font-size: 28px;
+            font-weight: 600;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .cta {
+            text-align: center;
+            padding: 40px;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 4.2s;
+        }
+
+        .cta-text {
+            font-size: 36px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .cta-text span {
+            color: #0D9488;
+        }
+
+        @keyframes reveal {
+            0% {
+                clip-path: inset(0 100% 0 0);
+            }
+            100% {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        @keyframes slideDivider {
+            0% {
+                left: 0;
+            }
+            100% {
+                left: calc(100% - 8px);
+            }
+        }
+
+        @keyframes fadeLabel {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Placeholder icons for demo */
+        .placeholder-icon {
+            font-size: 300px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">ANAGEN</div>
+        <h1 class="title">Real Results</h1>
+    </div>
+
+    <div class="reveal-container">
+        <div class="image-layer before-layer">
+            <span class="placeholder-icon">😔</span>
+        </div>
+        <div class="image-layer after-layer">
+            <span class="placeholder-icon">😊</span>
+        </div>
+        <div class="divider"></div>
+        <div class="labels">
+            <div class="label label-before">Before</div>
+            <div class="label label-after">After</div>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">6</div>
+            <div class="stat-label">Months</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">23%</div>
+            <div class="stat-label">Density Increase</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">94%</div>
+            <div class="stat-label">Satisfaction</div>
+        </div>
+    </div>
+
+    <div class="cta">
+        <p class="cta-text">Start your journey with <span>Anagen</span></p>
+    </div>
+</body>
+</html>

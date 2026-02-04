@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <title>Anagen - CTA with Pulsing Button</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 1080px;
+            height: 1920px;
+            background: #F5F5F3;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Animated background gradient */
+        .bg-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #F5F5F3 0%, #e8f5f4 50%, #F5F5F3 100%);
+            animation: gradientShift 8s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                background: linear-gradient(180deg, #F5F5F3 0%, #e8f5f4 50%, #F5F5F3 100%);
+            }
+            50% {
+                background: linear-gradient(180deg, #F5F5F3 0%, #d4eeec 50%, #F5F5F3 100%);
+            }
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 100px 80px;
+        }
+
+        .header {
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 800;
+            color: #0D9488;
+            letter-spacing: -2px;
+            opacity: 0;
+            animation: fadeInDown 0.8s ease forwards 0.2s;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .headline {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.5s;
+        }
+
+        .headline-small {
+            font-size: 36px;
+            font-weight: 600;
+            color: #0D9488;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            margin-bottom: 30px;
+        }
+
+        .headline-main {
+            font-size: 96px;
+            font-weight: 900;
+            color: #1a1a1a;
+            line-height: 1.05;
+            letter-spacing: -3px;
+        }
+
+        .headline-main span {
+            color: #0D9488;
+        }
+
+        .subtext {
+            font-size: 38px;
+            font-weight: 500;
+            color: #666;
+            margin-top: 50px;
+            line-height: 1.5;
+            max-width: 800px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 0.8s;
+        }
+
+        .benefits-row {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-top: 80px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 1.1s;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 30px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .benefit-check {
+            width: 40px;
+            height: 40px;
+            background: #0D9488;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .cta-area {
+            padding: 80px;
+            text-align: center;
+        }
+
+        .cta-button-wrapper {
+            position: relative;
+            display: inline-block;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 1.4s;
+        }
+
+        /* Pulsing rings */
+        .pulse-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 100px;
+            border: 3px solid #0D9488;
+            animation: pulseRing 2s ease-out infinite;
+        }
+
+        .pulse-ring:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .pulse-ring:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .cta-button {
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(135deg, #0D9488 0%, #0f766e 100%);
+            color: white;
+            padding: 50px 120px;
+            border-radius: 100px;
+            font-size: 42px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            box-shadow: 0 20px 50px rgba(13, 148, 136, 0.4);
+            animation: buttonPulse 2s ease-in-out infinite 2s;
+            cursor: pointer;
+        }
+
+        .cta-subtext {
+            margin-top: 40px;
+            font-size: 28px;
+            color: #999;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards 1.8s;
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 50px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards 2s;
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 26px;
+            color: #666;
+        }
+
+        .trust-icon {
+            font-size: 30px;
+        }
+
+        /* Decorative elements */
+        .deco-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: #0D9488;
+            opacity: 0.06;
+        }
+
+        .deco-1 {
+            width: 400px;
+            height: 400px;
+            top: -100px;
+            right: -100px;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .deco-2 {
+            width: 300px;
+            height: 300px;
+            bottom: 200px;
+            left: -100px;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        .deco-3 {
+            width: 200px;
+            height: 200px;
+            top: 40%;
+            right: 50px;
+            animation: float 12s ease-in-out infinite 2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulseRing {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 20px 50px rgba(13, 148, 136, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 25px 60px rgba(13, 148, 136, 0.5);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+
+        /* Arrow animation */
+        .arrow {
+            display: inline-block;
+            margin-left: 15px;
+            animation: arrowBounce 1s ease-in-out infinite 2s;
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient"></div>
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-2"></div>
+    <div class="deco-circle deco-3"></div>
+
+    <div class="content">
+        <div class="header">
+            <div class="logo">ANAGEN</div>
+        </div>
+
+        <div class="main-content">
+            <div class="headline">
+                <div class="headline-small">Limited Time Offer</div>
+                <h1 class="headline-main">Ready to<br><span>Regrow?</span></h1>
+            </div>
+
+            <p class="subtext">Join 127+ members already seeing results with science-backed hair regrowth.</p>
+
+            <div class="benefits-row">
+                <div class="benefit-item">
+                    <div class="benefit-check">✓</div>
+                    Free Shipping
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-check">✓</div>
+                    Cancel Anytime
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-check">✓</div>
+                    Results Guarantee
+                </div>
+            </div>
+        </div>
+
+        <div class="cta-area">
+            <div class="cta-button-wrapper">
+                <div class="pulse-ring"></div>
+                <div class="pulse-ring"></div>
+                <div class="pulse-ring"></div>
+                <div class="cta-button">
+                    Get Started <span class="arrow">→</span>
+                </div>
+            </div>
+
+            <div class="cta-subtext">
+                Use code HAIR20 for 20% off your first order
+            </div>
+
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <span class="trust-icon">🔒</span>
+                    Secure Checkout
+                </div>
+                <div class="trust-badge">
+                    <span class="trust-icon">⭐</span>
+                    4.9/5 Rating
+                </div>
+                <div class="trust-badge">
+                    <span class="trust-icon">📦</span>
+                    Ships in 24h
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

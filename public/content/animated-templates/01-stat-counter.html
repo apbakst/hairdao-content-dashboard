@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <title>Anagen - Stat Counter Animation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 1080px;
+            height: 1920px;
+            background: #F5F5F3;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            text-align: center;
+            padding: 60px;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 800;
+            color: #0D9488;
+            letter-spacing: -2px;
+            margin-bottom: 120px;
+            opacity: 0;
+            animation: fadeInDown 0.8s ease forwards;
+        }
+
+        .stat-box {
+            background: white;
+            border-radius: 40px;
+            padding: 80px 100px;
+            box-shadow: 0 20px 60px rgba(13, 148, 136, 0.15);
+            opacity: 0;
+            transform: scale(0.8);
+            animation: popIn 0.6s ease forwards 0.4s;
+        }
+
+        .counter-wrapper {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .counter {
+            font-size: 200px;
+            font-weight: 900;
+            color: #1a1a1a;
+            line-height: 1;
+        }
+
+        .plus {
+            font-size: 120px;
+            font-weight: 700;
+            color: #0D9488;
+            animation: pulse 1.5s ease-in-out infinite 2s;
+        }
+
+        .label {
+            font-size: 56px;
+            font-weight: 600;
+            color: #666;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+        }
+
+        .tagline {
+            margin-top: 100px;
+            font-size: 42px;
+            font-weight: 600;
+            color: #1a1a1a;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards 1.5s;
+        }
+
+        .tagline span {
+            color: #0D9488;
+        }
+
+        .decoration {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0D9488 0%, #14b8a6 100%);
+            opacity: 0.1;
+        }
+
+        .decoration-1 {
+            top: -100px;
+            right: -100px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .decoration-2 {
+            bottom: -150px;
+            left: -150px;
+            width: 400px;
+            height: 400px;
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-30px) rotate(10deg);
+            }
+        }
+
+        @keyframes countUp {
+            0% { content: "0"; }
+            10% { content: "12"; }
+            20% { content: "27"; }
+            30% { content: "48"; }
+            40% { content: "65"; }
+            50% { content: "83"; }
+            60% { content: "97"; }
+            70% { content: "108"; }
+            80% { content: "118"; }
+            90% { content: "124"; }
+            100% { content: "127"; }
+        }
+    </style>
+</head>
+<body>
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    
+    <div class="container">
+        <div class="logo">ANAGEN</div>
+        
+        <div class="stat-box">
+            <div class="counter-wrapper">
+                <div class="counter" id="counter">0</div>
+                <span class="plus">+</span>
+            </div>
+            <div class="label">Members</div>
+        </div>
+        
+        <div class="tagline">Join the <span>hair science</span> revolution</div>
+    </div>
+
+    <script>
+        // Animate counter from 0 to 127
+        function animateCounter(target, duration) {
+            const counter = document.getElementById('counter');
+            const start = 0;
+            const end = target;
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function for smooth deceleration
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(start + (end - start) * easeOut);
+                
+                counter.textContent = current;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        // Start animation after initial animations complete
+        setTimeout(() => {
+            animateCounter(127, 2000);
+        }, 1000);
+    </script>
+</body>
+</html>

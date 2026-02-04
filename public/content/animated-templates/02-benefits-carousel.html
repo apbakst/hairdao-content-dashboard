@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1920">
+    <title>Anagen - Benefits Carousel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 1080px;
+            height: 1920px;
+            background: #F5F5F3;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+
+        .header {
+            padding: 80px 60px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 42px;
+            font-weight: 800;
+            color: #0D9488;
+            letter-spacing: -1px;
+        }
+
+        .title {
+            font-size: 72px;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-top: 60px;
+            line-height: 1.1;
+        }
+
+        .carousel-container {
+            position: relative;
+            height: 1200px;
+            overflow: hidden;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide {
+            min-width: 1080px;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .benefit-card {
+            background: white;
+            border-radius: 40px;
+            padding: 80px;
+            width: 920px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            transform: scale(0.95);
+            opacity: 0.5;
+            transition: all 0.5s ease;
+        }
+
+        .slide.active .benefit-card {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .benefit-icon {
+            width: 160px;
+            height: 160px;
+            background: linear-gradient(135deg, #0D9488 0%, #14b8a6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 50px;
+            font-size: 80px;
+        }
+
+        .benefit-title {
+            font-size: 52px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+        }
+
+        .benefit-desc {
+            font-size: 36px;
+            font-weight: 500;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 60px;
+        }
+
+        .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ccc;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #0D9488;
+            width: 48px;
+            border-radius: 8px;
+        }
+
+        .swipe-hint {
+            position: absolute;
+            bottom: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 32px;
+            color: #999;
+            animation: swipeHint 2s ease-in-out infinite;
+        }
+
+        .swipe-hint svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        @keyframes swipeHint {
+            0%, 100% {
+                transform: translateX(-50%) translateX(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(-50%) translateX(-20px);
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">ANAGEN</div>
+        <h1 class="title">Why Members<br>Love Us</h1>
+    </div>
+
+    <div class="carousel-container">
+        <div class="carousel" id="carousel">
+            <div class="slide active">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🧬</div>
+                    <h2 class="benefit-title">Science-Backed</h2>
+                    <p class="benefit-desc">Real research, real results. We fund clinical trials and publish everything.</p>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h2 class="benefit-title">Member-Owned</h2>
+                    <p class="benefit-desc">You're not just a customer—you're an owner with voting rights.</p>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔬</div>
+                    <h2 class="benefit-title">Cutting Edge</h2>
+                    <p class="benefit-desc">Access to breakthrough treatments before they hit the mainstream.</p>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🤝</div>
+                    <h2 class="benefit-title">Community</h2>
+                    <p class="benefit-desc">Connect with others on the same journey. Share tips, results, and support.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dots" id="dots">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+
+    <div class="swipe-hint">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        Swipe for more
+    </div>
+
+    <script>
+        const carousel = document.getElementById('carousel');
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        let currentSlide = 0;
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            dots[currentSlide].classList.remove('active');
+            
+            currentSlide = index;
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+            carousel.style.transform = `translateX(-${currentSlide * 1080}px)`;
+        }
+
+        // Auto-advance slides
+        setInterval(() => {
+            const next = (currentSlide + 1) % slides.length;
+            goToSlide(next);
+        }, 3000);
+    </script>
+</body>
+</html>

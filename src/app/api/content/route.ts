@@ -2,79 +2,114 @@ import { NextResponse } from 'next/server'
 import fs from 'fs'
 import path from 'path'
 
-const CONTENT_DIR = path.join(process.cwd(), 'public', 'content')
-const STATUS_FILE = path.join(CONTENT_DIR, 'status.json')
-
 interface ContentSet {
   id: string
   date: string
+  headline: string
   caption: string
   slides: string[]
   status: 'pending' | 'approved' | 'posted'
-  zipUrl: string
+  zipUrl?: string
+  style: string
 }
 
-function loadStatus(): Record<string, string> {
-  try {
-    if (fs.existsSync(STATUS_FILE)) {
-      return JSON.parse(fs.readFileSync(STATUS_FILE, 'utf8'))
-    }
-  } catch {}
-  return {}
+interface AIImage {
+  id: string
+  file: string
+  url: string
+  prompt: string
+  category: 'ai-ads' | 'product-ads'
+  style: 'minimal' | 'lifestyle' | 'product'
 }
 
-function saveStatus(status: Record<string, string>) {
-  fs.mkdirSync(CONTENT_DIR, { recursive: true })
-  fs.writeFileSync(STATUS_FILE, JSON.stringify(status, null, 2))
+function inferStyle(filename: string, prompt: string): 'minimal' | 'lifestyle' | 'product' {
+  const combined = (filename + ' ' + prompt).toLowerCase()
+  if (combined.includes('lifestyle') || combined.includes('portrait') || combined.includes('person') || combined.includes('morning') || combined.includes('community') || combined.includes('running')) {
+    return 'lifestyle'
+  }
+  if (combined.includes('product') || combined.includes('bottle') || combined.includes('serum') || combined.includes('flat-lay') || combined.includes('arrangement') || combined.includes('hero')) {
+    return 'product'
+  }
+  return 'minimal'
 }
 
 export async function GET() {
+  const contentDir = path.join(process.cwd(), 'public', 'content')
+  
+  const contentSets: ContentSet[] = []
+  const aiImages: AIImage[] = []
+  
   try {
-    const status = loadStatus()
-    const content: ContentSet[] = []
-    
-    if (!fs.existsSync(CONTENT_DIR)) {
-      return NextResponse.json({ content: [] })
-    }
-    
-    const dirs = fs.readdirSync(CONTENT_DIR).filter(d => {
-      const fullPath = path.join(CONTENT_DIR, d)
-      return fs.statSync(fullPath).isDirectory() && d.startsWith('set')
-    })
+    const dirs = fs.readdirSync(contentDir)
     
     for (const dir of dirs) {
-      const metaPath = path.join(CONTENT_DIR, dir, 'metadata.json')
-      if (fs.existsSync(metaPath)) {
-        const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'))
-        content.push({
-          id: meta.id || dir,
-          date: meta.generatedAt?.split('T')[0] || 'Unknown',
-          caption: meta.caption || '',
-          slides: [1, 2, 3, 4].map(i => `/content/${dir}/slide${i}.png`),
-          status: (status[meta.id] as ContentSet['status']) || 'pending',
-          zipUrl: `/content/${dir}/slides.zip`
-        })
+      const dirPath = path.join(contentDir, dir)
+      const stat = fs.statSync(dirPath)
+      
+      if (!stat.isDirectory()) continue
+      
+      // Handle content sets (set1, set2, etc.)
+      if (dir.startsWith('set')) {
+        const metadataPath = path.join(dirPath, 'metadata.json')
+        if (fs.existsSync(metadataPath)) {
+          const metadata = JSON.parse(fs.readFileSync(metadataPath, 'utf8'))
+          const files = fs.readdirSync(dirPath)
+          const slides = files
+            .filter(f => f.startsWith('slide') && f.endsWith('.png'))
+            .sort()
+            .map(f => `/content/${dir}/${f}`)
+          
+          contentSets.push({
+            id: metadata.id || dir,
+            date: metadata.generatedAt?.split('T')[0] || new Date().toISOString().split('T')[0],
+            headline: metadata.headline || '',
+            caption: metadata.caption || '',
+            slides,
+            status: 'pending',
+            zipUrl: `/content/${dir}/slides.zip`,
+            style: metadata.style || 'ro-minimal'
+          })
+        }
+      }
+      
+      // Handle AI image galleries
+      if (dir === 'ai-ads' || dir === 'product-ads') {
+        const promptsPath = path.join(dirPath, 'prompts.json')
+        let prompts: { prompt: string; file: string }[] = []
+        
+        if (fs.existsSync(promptsPath)) {
+          prompts = JSON.parse(fs.readFileSync(promptsPath, 'utf8'))
+        }
+        
+        const files = fs.readdirSync(dirPath)
+        const images = files.filter(f => f.endsWith('.png') || f.endsWith('.jpg') || f.endsWith('.jpeg'))
+        
+        for (const file of images) {
+          const promptEntry = prompts.find(p => p.file === file)
+          const prompt = promptEntry?.prompt || ''
+          
+          aiImages.push({
+            id: `${dir}-${file}`,
+            file,
+            url: `/content/${dir}/${file}`,
+            prompt,
+            category: dir as 'ai-ads' | 'product-ads',
+            style: inferStyle(file, prompt)
+          })
+        }
       }
     }
     
-    // Sort by date descending
-    content.sort((a, b) => b.date.localeCompare(a.date))
+    // Sort content sets by id
+    contentSets.sort((a, b) => {
+      const numA = parseInt(a.id.replace('set', ''))
+      const numB = parseInt(b.id.replace('set', ''))
+      return numA - numB
+    })
     
-    return NextResponse.json({ content })
+    return NextResponse.json({ contentSets, aiImages })
   } catch (error) {
-    console.error('Error loading content:', error)
-    return NextResponse.json({ content: [], error: 'Failed to load content' })
-  }
-}
-
-export async function POST(request: Request) {
-  try {
-    const { id, status: newStatus } = await request.json()
-    const statusMap = loadStatus()
-    statusMap[id] = newStatus
-    saveStatus(statusMap)
-    return NextResponse.json({ success: true })
-  } catch (error) {
-    return NextResponse.json({ success: false, error: 'Failed to update status' })
+    console.error('Error reading content directory:', error)
+    return NextResponse.json({ contentSets: [], aiImages: [] })
   }
 }

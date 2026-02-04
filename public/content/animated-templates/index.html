@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anagen - Animated Templates Gallery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F5F5F3;
+            min-height: 100vh;
+            padding: 60px 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            font-size: 36px;
+            font-weight: 800;
+            color: #0D9488;
+            letter-spacing: -1px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: #1a1a1a;
+            margin-top: 20px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-top: 15px;
+        }
+
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .template-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .template-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        .template-preview {
+            width: 100%;
+            aspect-ratio: 9/16;
+            background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .template-preview iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 1080px;
+            height: 1920px;
+            transform: scale(0.296);
+            transform-origin: top left;
+            border: none;
+            pointer-events: none;
+        }
+
+        .template-info {
+            padding: 25px;
+        }
+
+        .template-number {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0D9488;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .template-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-top: 8px;
+        }
+
+        .template-desc {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        .template-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #0D9488;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0f766e;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #1a1a1a;
+        }
+
+        .btn-secondary:hover {
+            background: #e5e5e5;
+        }
+
+        .usage-guide {
+            max-width: 1400px;
+            margin: 80px auto 0;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .usage-guide h2 {
+            font-size: 28px;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .usage-guide ol {
+            margin-left: 20px;
+            color: #666;
+            line-height: 2;
+        }
+
+        .usage-guide code {
+            background: #f0f0f0;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">ANAGEN</div>
+        <h1>Animated Templates</h1>
+        <p class="subtitle">Instagram Stories & Reels • 1080×1920 • Screen-record ready</p>
+    </div>
+
+    <div class="templates-grid">
+        <div class="template-card">
+            <div class="template-preview">
+                <iframe src="01-stat-counter.html" loading="lazy"></iframe>
+            </div>
+            <div class="template-info">
+                <div class="template-number">Template 01</div>
+                <div class="template-name">Stat Counter</div>
+                <div class="template-desc">Animated counter showing 127+ members with smooth counting animation and pulsing plus sign.</div>
+                <div class="template-actions">
+                    <a href="01-stat-counter.html" target="_blank" class="btn btn-primary">Open Full Size</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="template-card">
+            <div class="template-preview">
+                <iframe src="02-benefits-carousel.html" loading="lazy"></iframe>
+            </div>
+            <div class="template-info">
+                <div class="template-number">Template 02</div>
+                <div class="template-name">Benefits Carousel</div>
+                <div class="template-desc">Auto-advancing swipe-through carousel showcasing key member benefits.</div>
+                <div class="template-actions">
+                    <a href="02-benefits-carousel.html" target="_blank" class="btn btn-primary">Open Full Size</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="template-card">
+            <div class="template-preview">
+                <iframe src="03-before-after-reveal.html" loading="lazy"></iframe>
+            </div>
+            <div class="template-info">
+                <div class="template-number">Template 03</div>
+                <div class="template-name">Before/After Reveal</div>
+                <div class="template-desc">Dramatic sliding reveal animation showing transformation results with stats.</div>
+                <div class="template-actions">
+                    <a href="03-before-after-reveal.html" target="_blank" class="btn btn-primary">Open Full Size</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="template-card">
+            <div class="template-preview">
+                <iframe src="04-product-showcase.html" loading="lazy"></iframe>
+            </div>
+            <div class="template-info">
+                <div class="template-number">Template 04</div>
+                <div class="template-name">Product Showcase</div>
+                <div class="template-desc">Product bottle with floating benefit cards and feature badges appearing around it.</div>
+                <div class="template-actions">
+                    <a href="04-product-showcase.html" target="_blank" class="btn btn-primary">Open Full Size</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="template-card">
+            <div class="template-preview">
+                <iframe src="05-cta-pulsing.html" loading="lazy"></iframe>
+            </div>
+            <div class="template-info">
+                <div class="template-number">Template 05</div>
+                <div class="template-name">CTA with Pulsing Button</div>
+                <div class="template-desc">Bold call-to-action with radiating pulse rings and animated button for conversions.</div>
+                <div class="template-actions">
+                    <a href="05-cta-pulsing.html" target="_blank" class="btn btn-primary">Open Full Size</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="usage-guide">
+        <h2>📹 How to Create Videos</h2>
+        <ol>
+            <li>Click "Open Full Size" to open template at 1080×1920</li>
+            <li>Use screen recording software (OBS, QuickTime, etc.) to capture</li>
+            <li>Record for 5-10 seconds depending on animation length</li>
+            <li>Trim and export as MP4 for Instagram Stories/Reels</li>
+            <li>Optional: Add music track in Instagram or video editor</li>
+        </ol>
+        <p style="margin-top: 20px; color: #999;">
+            <strong>Tip:</strong> For best quality, set browser zoom to 100% and record at 1080×1920 resolution.
+            Animations auto-play on page load—refresh to replay.
+        </p>
+    </div>
+</body>
+</html>
