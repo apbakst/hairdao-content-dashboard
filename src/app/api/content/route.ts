@@ -18,7 +18,7 @@ interface AIImage {
   file: string
   url: string
   prompt: string
-  category: 'ai-ads' | 'product-ads'
+  category: 'ai-ads' | 'product-ads' | 'meta-ads'
   style: 'minimal' | 'lifestyle' | 'product'
 }
 
@@ -73,7 +73,7 @@ export async function GET() {
       }
       
       // Handle AI image galleries
-      if (dir === 'ai-ads' || dir === 'product-ads') {
+      if (dir === 'ai-ads' || dir === 'ai-ads-v2' || dir === 'product-ads' || dir === 'meta-ads') {
         const promptsPath = path.join(dirPath, 'prompts.json')
         let prompts: { prompt: string; file: string }[] = []
         
@@ -88,12 +88,18 @@ export async function GET() {
           const promptEntry = prompts.find(p => p.file === file)
           const prompt = promptEntry?.prompt || ''
           
+          // Map directories to categories
+          let category: 'ai-ads' | 'product-ads' | 'meta-ads' = 'ai-ads'
+          if (dir === 'meta-ads') category = 'meta-ads'
+          else if (dir === 'product-ads') category = 'product-ads'
+          else if (dir === 'ai-ads-v2' || dir === 'ai-ads') category = 'ai-ads'
+          
           aiImages.push({
             id: `${dir}-${file}`,
             file,
             url: `/content/${dir}/${file}`,
             prompt,
-            category: dir as 'ai-ads' | 'product-ads',
+            category,
             style: inferStyle(file, prompt)
           })
         }

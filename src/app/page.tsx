@@ -19,14 +19,22 @@ interface AIImage {
   file: string
   url: string
   prompt: string
-  category: 'ai-ads' | 'product-ads'
+  category: 'ai-ads' | 'product-ads' | 'meta-ads'
   style: 'minimal' | 'lifestyle' | 'product'
+}
+
+interface AIDetectionResult {
+  file: string
+  aiScore: number | null
+  isAI: boolean | null
+  provider: string
+  checkedAt: string
 }
 
 type ViewMode = 'carousel' | 'gallery'
 type StatusFilter = 'all' | 'pending' | 'approved' | 'posted'
 type StyleFilter = 'all' | 'minimal' | 'lifestyle' | 'product'
-type GalleryCategory = 'all' | 'ai-ads' | 'product-ads'
+type GalleryCategory = 'all' | 'meta-ads' | 'ai-ads' | 'product-ads'
 
 export default function Dashboard() {
   const [contentSets, setContentSets] = useState<ContentSet[]>([])
@@ -39,6 +47,9 @@ export default function Dashboard() {
   const [styleFilter, setStyleFilter] = useState<StyleFilter>('all')
   const [galleryCategory, setGalleryCategory] = useState<GalleryCategory>('all')
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [aiDetectionResults, setAiDetectionResults] = useState<Record<string, AIDetectionResult>>({})
+  const [aiDetectionConfigured, setAiDetectionConfigured] = useState(false)
+  const [scanning, setScanning] = useState(false)
 
   useEffect(() => {
     fetch('/api/content')
@@ -48,8 +59,55 @@ export default function Dashboard() {
         setAiImages(data.aiImages || [])
         setLoading(false)
       })
-      .catch(() => setLoading(false))
+    
+    // Load AI detection results
+    fetch('/api/ai-detect')
+      .then(res => res.json())
+      .then(data => {
+        setAiDetectionResults(data.results || {})
+        setAiDetectionConfigured(data.configured || false)
+      })
+      .catch(() => {})
   }, [])
+
+  const scanImageForAI = async (img: AIImage) => {
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : ''
+    const imageUrl = `${baseUrl}${img.url}`
+    
+    try {
+      const res = await fetch('/api/ai-detect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageUrl, file: img.file })
+      })
+      const result = await res.json()
+      if (result.aiScore !== undefined) {
+        setAiDetectionResults(prev => ({ ...prev, [img.file]: result }))
+      }
+      return result
+    } catch (e) {
+      console.error('AI detection failed:', e)
+      return null
+    }
+  }
+
+  const scanAllImages = async () => {
+    setScanning(true)
+    for (const img of filteredImages) {
+      if (!aiDetectionResults[img.file]) {
+        await scanImageForAI(img)
+        await new Promise(r => setTimeout(r, 500)) // Rate limit
+      }
+    }
+    setScanning(false)
+  }
+
+  const getAIScoreColor = (score: number | null) => {
+    if (score === null) return 'bg-gray-500/20 text-gray-300'
+    if (score < 30) return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+    if (score < 70) return 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+    return 'bg-red-500/20 text-red-300 border-red-500/30'
+  }
 
   const filteredContent = contentSets.filter(c => 
     (statusFilter === 'all' || c.status === statusFilter)
@@ -291,19 +349,48 @@ export default function Dashboard() {
               
               <div className="flex items-center gap-3">
                 <span className="text-white/40 text-sm">Category:</span>
-                {(['all', 'ai-ads', 'product-ads'] as const).map(c => (
+                {(['all', 'meta-ads', 'ai-ads', 'product-ads'] as const).map(c => (
                   <button
                     key={c}
                     onClick={() => setGalleryCategory(c)}
                     className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                       galleryCategory === c
-                        ? 'bg-violet-500 text-white shadow-lg shadow-violet-500/25'
+                        ? c === 'meta-ads' 
+                          ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/25'
+                          : 'bg-violet-500 text-white shadow-lg shadow-violet-500/25'
                         : 'bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/80 border border-white/10'
                     }`}
                   >
-                    {c === 'all' ? 'All' : c === 'ai-ads' ? '🎨 AI Ads' : '📦 Product Ads'}
+                    {c === 'all' ? 'All' : c === 'meta-ads' ? '🚀 Meta Ads' : c === 'ai-ads' ? '🎨 AI Ads' : '📦 Product Ads'}
                   </button>
                 ))}
+              </div>
+
+              {/* AI Detection */}
+              <div className="flex items-center gap-3 ml-auto">
+                <button
+                  onClick={scanAllImages}
+                  disabled={scanning || !aiDetectionConfigured}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2 ${
+                    scanning 
+                      ? 'bg-purple-500/30 text-purple-300 cursor-wait'
+                      : aiDetectionConfigured
+                        ? 'bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30'
+                        : 'bg-white/5 text-white/30 cursor-not-allowed'
+                  }`}
+                  title={aiDetectionConfigured ? 'Scan all images for AI detection' : 'Set SIGHTENGINE_API_USER and SIGHTENGINE_API_SECRET to enable'}
+                >
+                  {scanning ? (
+                    <>
+                      <span className="animate-spin">⟳</span> Scanning...
+                    </>
+                  ) : (
+                    <>🔍 AI Detect</>
+                  )}
+                </button>
+                {!aiDetectionConfigured && (
+                  <span className="text-xs text-white/30">API not configured</span>
+                )}
               </div>
             </div>
 
@@ -326,9 +413,17 @@ export default function Dashboard() {
                   
                   {/* Badges */}
                   <div className="absolute top-3 left-3 right-3 flex justify-between items-start">
-                    <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase border backdrop-blur-sm ${styleColors[img.style]}`}>
-                      {img.style}
-                    </span>
+                    <div className="flex flex-col gap-1">
+                      <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase border backdrop-blur-sm ${styleColors[img.style]}`}>
+                        {img.style}
+                      </span>
+                      {/* AI Detection Score */}
+                      {aiDetectionResults[img.file] && (
+                        <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold border backdrop-blur-sm ${getAIScoreColor(aiDetectionResults[img.file].aiScore)}`}>
+                          AI: {aiDetectionResults[img.file].aiScore}%
+                        </span>
+                      )}
+                    </div>
                     <span className="px-2.5 py-1 rounded-lg text-[10px] font-bold bg-black/50 text-white/70 backdrop-blur-sm">
                       {img.category === 'ai-ads' ? '🎨' : '📦'}
                     </span>
