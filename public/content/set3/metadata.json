@@ -1,0 +1,33 @@
+{
+  "id": "2026-02-04_set3",
+  "generatedAt": "2026-02-04T15:14:39.780Z",
+  "basedOn": {
+    "id": "theme_early",
+    "text": "The best time to start was yesterday. The second best time is now.",
+    "theme": "urgency",
+    "angle": "early intervention"
+  },
+  "caption": "Funded by patients, for patients. The best time to join real research is now. This is what patient-first science looks like 🧬",
+  "slides": {
+    "slide1": {
+      "headline": "THE FUTURE OF",
+      "subhead": "HAIR RESEARCH"
+    },
+    "slide2": {
+      "stat": "127+",
+      "label": "Trial Participants"
+    },
+    "slide3": {
+      "points": [
+        "Open clinical trials",
+        "Community funded",
+        "Published results"
+      ]
+    },
+    "slide4": {
+      "cta": "Start Your Growth Journey",
+      "subtext": "Be part of the cure"
+    }
+  },
+  "directory": "/root/clawd/hairdao-content-pipeline/output/slides/2026-02-04_set3"
+}

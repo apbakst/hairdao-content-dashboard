@@ -1,0 +1,33 @@
+{
+  "id": "2026-02-04_set1",
+  "generatedAt": "2026-02-04T15:14:39.779Z",
+  "basedOn": {
+    "id": "theme_science",
+    "text": "FDA-approved treatments. Backed by science.",
+    "theme": "credibility",
+    "angle": "scientific backing"
+  },
+  "caption": "Breakthroughs don't happen behind closed doors. Our science is open for everyone to verify. Join the movement 🧬",
+  "slides": {
+    "slide1": {
+      "headline": "PATIENT-POWERED",
+      "subhead": "SCIENCE"
+    },
+    "slide2": {
+      "stat": "#1",
+      "label": "Hair Laboratory"
+    },
+    "slide3": {
+      "points": [
+        "Open clinical trials",
+        "Community funded",
+        "Published results"
+      ]
+    },
+    "slide4": {
+      "cta": "Start Your Growth Journey",
+      "subtext": "anagen.hairdao.org"
+    }
+  },
+  "directory": "/root/clawd/hairdao-content-pipeline/output/slides/2026-02-04_set1"
+}
