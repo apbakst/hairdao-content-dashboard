@@ -1,33 +1,7 @@
 {
-  "id": "2026-02-04_set2",
-  "generatedAt": "2026-02-04T15:14:39.780Z",
-  "basedOn": {
-    "id": "theme_confidence",
-    "text": "Feel like yourself again. Hair loss treatment that actually works.",
-    "theme": "confidence",
-    "angle": "emotional benefit"
-  },
-  "caption": "Every finding published. Every patient heard. Confidence comes from real progress, not promises. That's the Anagen difference 🧬",
-  "slides": {
-    "slide1": {
-      "headline": "JOIN THE",
-      "subhead": "BREAKTHROUGH"
-    },
-    "slide2": {
-      "stat": "100%",
-      "label": "Transparent Results"
-    },
-    "slide3": {
-      "points": [
-        "Transparent science",
-        "Real progress",
-        "Your data, your choice"
-      ]
-    },
-    "slide4": {
-      "cta": "Start Your Growth Journey",
-      "subtext": "Join the breakthrough"
-    }
-  },
-  "directory": "/root/clawd/hairdao-content-pipeline/output/slides/2026-02-04_set2"
+  "id": "set2",
+  "theme": "convenience",
+  "competitorAngle": "Treatment delivered to your door",
+  "caption": "Convenience is great, but what if we actually solved the problem? Anagen is world-class hair loss research — open to everyone. 🧬",
+  "generatedAt": "2026-02-04T15:34:46.528Z"
 }

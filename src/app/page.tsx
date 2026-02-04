@@ -9,33 +9,100 @@ interface ContentSet {
   slides: string[]
   status: 'pending' | 'approved' | 'posted'
   zipUrl?: string
+  theme?: string
 }
 
-// Sample data - in production this would come from an API
+// 10 content sets based on competitor ad themes
 const sampleContent: ContentSet[] = [
   {
-    id: '2026-02-04_set1',
+    id: 'set1',
     date: '2026-02-04',
-    caption: 'Breakthroughs don\'t happen behind closed doors. Our science is open for everyone to verify. Join the movement 🧬',
+    caption: 'Access to treatment isn\'t enough — we want cures. HairDAO is funding real research, not just prescriptions. Science. Community. Progress. 🧬',
     slides: ['/content/set1/slide1.png', '/content/set1/slide2.png', '/content/set1/slide3.png', '/content/set1/slide4.png'],
     status: 'pending',
-    zipUrl: '/content/set1/slides.zip'
+    zipUrl: '/content/set1/slides.zip',
+    theme: 'access'
   },
   {
-    id: '2026-02-04_set2',
+    id: 'set2',
     date: '2026-02-04',
-    caption: 'Every finding published. Every patient heard. Confidence comes from real progress, not promises. That\'s the Anagen difference 🧬',
+    caption: 'Convenience is great, but what if we actually solved the problem? Anagen is world-class hair loss research — open to everyone. 🧬',
     slides: ['/content/set2/slide1.png', '/content/set2/slide2.png', '/content/set2/slide3.png', '/content/set2/slide4.png'],
     status: 'pending',
-    zipUrl: '/content/set2/slides.zip'
+    zipUrl: '/content/set2/slides.zip',
+    theme: 'convenience'
   },
   {
-    id: '2026-02-04_set3',
+    id: 'set3',
     date: '2026-02-04',
-    caption: 'Funded by patients, for patients. The best time to join real research is now. This is what patient-first science looks like 🧬',
+    caption: 'Our results belong to everyone — not shareholders. Transparent trials, open data, real progress. That\'s the Anagen difference 🧬',
     slides: ['/content/set3/slide1.png', '/content/set3/slide2.png', '/content/set3/slide3.png', '/content/set3/slide4.png'],
-    status: 'approved',
-    zipUrl: '/content/set3/slides.zip'
+    status: 'pending',
+    zipUrl: '/content/set3/slides.zip',
+    theme: 'results'
+  },
+  {
+    id: 'set4',
+    date: '2026-02-04',
+    caption: 'The best time to join real research is now. Anagen — where your participation drives breakthroughs 🧬',
+    slides: ['/content/set4/slide1.png', '/content/set4/slide2.png', '/content/set4/slide3.png', '/content/set4/slide4.png'],
+    status: 'pending',
+    zipUrl: '/content/set4/slides.zip',
+    theme: 'early_intervention'
+  },
+  {
+    id: 'set5',
+    date: '2026-02-04',
+    caption: 'Personalized care meets collective breakthroughs. Anagen combines individual attention with community-powered research 🧬',
+    slides: ['/content/set5/slide1.png', '/content/set5/slide2.png', '/content/set5/slide3.png', '/content/set5/slide4.png'],
+    status: 'pending',
+    zipUrl: '/content/set5/slides.zip',
+    theme: 'personalization'
+  },
+  {
+    id: 'set6',
+    date: '2026-02-04',
+    caption: 'Our science is open for everyone to verify. No gatekeepers, no black boxes — just transparent research 🧬',
+    slides: ['/content/set6/slide1.png', '/content/set6/slide2.png', '/content/set6/slide3.png', '/content/set6/slide4.png'],
+    status: 'pending',
+    zipUrl: '/content/set6/slides.zip',
+    theme: 'science'
+  },
+  {
+    id: 'set7',
+    date: '2026-02-04',
+    caption: 'Confidence comes from real progress, not promises. Join a community actually working toward a cure 🧬',
+    slides: ['/content/set7/slide1.png', '/content/set7/slide2.png', '/content/set7/slide3.png', '/content/set7/slide4.png'],
+    status: 'pending',
+    zipUrl: '/content/set7/slides.zip',
+    theme: 'confidence'
+  },
+  {
+    id: 'set8',
+    date: '2026-02-04',
+    caption: 'We fund cures, not subscriptions. Anagen is research you own — patient-funded, patient-led 🧬',
+    slides: ['/content/set8/slide1.png', '/content/set8/slide2.png', '/content/set8/slide3.png', '/content/set8/slide4.png'],
+    status: 'pending',
+    zipUrl: '/content/set8/slides.zip',
+    theme: 'subscription'
+  },
+  {
+    id: 'set9',
+    date: '2026-02-04',
+    caption: 'Taking control of your health is powerful. Join thousands doing something real about hair loss 🧬',
+    slides: ['/content/set9/slide1.png', '/content/set9/slide2.png', '/content/set9/slide3.png', '/content/set9/slide4.png'],
+    status: 'pending',
+    zipUrl: '/content/set9/slides.zip',
+    theme: 'stigma'
+  },
+  {
+    id: 'set10',
+    date: '2026-02-04',
+    caption: 'The future of medicine is patient-owned. Anagen proves decentralized science works 🧬',
+    slides: ['/content/set10/slide1.png', '/content/set10/slide2.png', '/content/set10/slide3.png', '/content/set10/slide4.png'],
+    status: 'pending',
+    zipUrl: '/content/set10/slides.zip',
+    theme: 'future'
   },
 ]
 
@@ -127,7 +194,14 @@ export default function Dashboard() {
               {/* Content */}
               <div className="p-5">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="text-white/40 text-sm">{item.date}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-white/40 text-sm">{item.date}</span>
+                    {item.theme && (
+                      <span className="text-purple-400/60 text-xs bg-purple-500/10 px-2 py-0.5 rounded">
+                        {item.theme}
+                      </span>
+                    )}
+                  </div>
                   <span className={`px-3 py-1 rounded-full text-xs font-medium border ${statusColors[item.status]}`}>
                     {item.status}
                   </span>
@@ -152,12 +226,14 @@ export default function Dashboard() {
                       Mark Posted
                     </button>
                   )}
-                  <button
+                  <a
+                    href={item.zipUrl}
+                    download
                     onClick={(e) => e.stopPropagation()}
                     className="px-4 bg-white/10 hover:bg-white/20 text-white py-2 rounded-lg text-sm font-medium transition-all"
                   >
                     ↓
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -184,7 +260,7 @@ export default function Dashboard() {
             <div className="p-6 border-b border-white/10 flex items-center justify-between">
               <div>
                 <h2 className="text-xl font-bold text-white">{selectedSet.id}</h2>
-                <p className="text-white/50 text-sm">{selectedSet.date}</p>
+                <p className="text-white/50 text-sm">{selectedSet.date} • {selectedSet.theme}</p>
               </div>
               <button
                 onClick={() => setSelectedSet(null)}
