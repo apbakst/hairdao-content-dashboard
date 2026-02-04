@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    
+    .ad {
+      width: 1080px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Ad Style 1: Stats Hero */
+    .ad-stats {
+      background: linear-gradient(135deg, #0a1628 0%, #1a2d4a 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 80px;
+    }
+    .ad-stats .stat { font-size: 180px; font-weight: 800; color: #4fd1c5; }
+    .ad-stats .stat-label { font-size: 48px; color: white; margin-top: 20px; font-weight: 500; }
+    .ad-stats .subtext { font-size: 32px; color: rgba(255,255,255,0.7); margin-top: 40px; }
+    .ad-stats .cta { 
+      margin-top: 60px; 
+      background: #4fd1c5; 
+      color: #0a1628; 
+      padding: 24px 64px; 
+      border-radius: 50px;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    
+    /* Ad Style 2: Product + Price */
+    .ad-price {
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 80px;
+    }
+    .ad-price .headline { font-size: 56px; font-weight: 700; color: #1a1a1a; text-align: center; }
+    .ad-price .product-area { flex: 1; display: flex; align-items: center; justify-content: center; }
+    .ad-price .price-box { 
+      background: #0a1628; 
+      color: white; 
+      padding: 32px 64px; 
+      border-radius: 16px;
+      text-align: center;
+    }
+    .ad-price .price { font-size: 72px; font-weight: 800; }
+    .ad-price .price-sub { font-size: 28px; opacity: 0.8; }
+    
+    /* Ad Style 3: Before/After */
+    .ad-beforeafter {
+      display: flex;
+    }
+    .ad-beforeafter .side {
+      width: 50%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 40px;
+      position: relative;
+    }
+    .ad-beforeafter .side::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 300px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    }
+    .ad-beforeafter .label {
+      position: relative;
+      z-index: 1;
+      font-size: 48px;
+      font-weight: 700;
+      color: white;
+    }
+    .ad-beforeafter .time {
+      position: relative;
+      z-index: 1;
+      font-size: 28px;
+      color: rgba(255,255,255,0.8);
+      margin-top: 8px;
+    }
+    
+    /* Ad Style 4: Problem/Solution */
+    .ad-problem {
+      background: white;
+      padding: 80px;
+      display: flex;
+      flex-direction: column;
+    }
+    .ad-problem .problem {
+      font-size: 64px;
+      font-weight: 700;
+      color: #1a1a1a;
+      line-height: 1.2;
+    }
+    .ad-problem .solution {
+      font-size: 36px;
+      color: #4fd1c5;
+      margin-top: 30px;
+      font-weight: 600;
+    }
+    .ad-problem .product-strip {
+      margin-top: auto;
+      background: #f5f5f5;
+      margin: 60px -80px -80px;
+      padding: 40px 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ad-problem .brand { font-size: 32px; font-weight: 700; color: #1a1a1a; }
+    .ad-problem .shop-btn {
+      background: #0a1628;
+      color: white;
+      padding: 20px 48px;
+      border-radius: 8px;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    
+    /* Ad Style 5: Testimonial Card */
+    .ad-testimonial {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .ad-testimonial .quote {
+      font-size: 52px;
+      color: white;
+      font-weight: 500;
+      line-height: 1.4;
+      font-style: italic;
+    }
+    .ad-testimonial .author {
+      margin-top: 60px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .ad-testimonial .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+    }
+    .ad-testimonial .name { font-size: 28px; color: white; font-weight: 600; }
+    .ad-testimonial .stars { font-size: 32px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<!-- Ad 1: Stats Hero -->
+<div class="ad ad-stats" id="ad1">
+  <div class="stat">83%</div>
+  <div class="stat-label">saw thicker hair in 3 months</div>
+  <div class="subtext">Clinically proven ingredients. Real results.</div>
+  <div class="cta">Get Started →</div>
+</div>
+
+<!-- Ad 2: Price Point -->
+<div class="ad ad-price" id="ad2">
+  <div class="headline">Hair loss treatment<br>that actually works</div>
+  <div class="product-area">
+    <!-- Product image goes here -->
+    <img src="../ai-ads-v2/product-hero-marble.png" style="max-height: 500px;">
+  </div>
+  <div class="price-box">
+    <div class="price">$29/mo</div>
+    <div class="price-sub">Cancel anytime • Free shipping</div>
+  </div>
+</div>
+
+<!-- Ad 3: Problem/Solution -->
+<div class="ad ad-problem" id="ad3">
+  <div class="problem">Tired of watching your hairline disappear?</div>
+  <div class="solution">FDA-approved treatments delivered to your door.</div>
+  <div class="product-strip">
+    <div class="brand">anagen</div>
+    <div class="shop-btn">Shop Now</div>
+  </div>
+</div>
+
+</body>
+</html>
