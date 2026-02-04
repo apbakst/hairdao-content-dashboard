@@ -115,9 +115,12 @@ export default function Dashboard() {
               {/* Preview Grid */}
               <div className="grid grid-cols-2 gap-1 p-1 bg-black/30">
                 {item.slides.slice(0, 4).map((slide, i) => (
-                  <div key={i} className="aspect-square bg-gradient-to-br from-purple-900/50 to-violet-900/50 rounded-lg flex items-center justify-center text-white/30 text-xs">
-                    Slide {i + 1}
-                  </div>
+                  <img 
+                    key={i} 
+                    src={slide} 
+                    alt={`Slide ${i + 1}`}
+                    className="aspect-square object-cover rounded-lg bg-gradient-to-br from-purple-900/50 to-violet-900/50"
+                  />
                 ))}
               </div>
               
@@ -195,9 +198,12 @@ export default function Dashboard() {
             <div className="p-6">
               <div className="grid grid-cols-4 gap-4 mb-6">
                 {selectedSet.slides.map((slide, i) => (
-                  <div key={i} className="aspect-[4/5] bg-gradient-to-br from-purple-900/50 to-violet-900/50 rounded-xl flex items-center justify-center text-white/50">
-                    Slide {i + 1}
-                  </div>
+                  <img 
+                    key={i} 
+                    src={slide} 
+                    alt={`Slide ${i + 1}`}
+                    className="aspect-[4/5] object-cover rounded-xl bg-gradient-to-br from-purple-900/50 to-violet-900/50"
+                  />
                 ))}
               </div>
               
@@ -209,10 +215,20 @@ export default function Dashboard() {
               
               {/* Actions */}
               <div className="flex gap-3">
-                <button className="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-xl font-medium transition-all">
+                <a 
+                  href={selectedSet.zipUrl} 
+                  download
+                  className="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-3 rounded-xl font-medium transition-all text-center"
+                >
                   Download All Slides
-                </button>
-                <button className="px-6 bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl font-medium transition-all">
+                </a>
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText(selectedSet.caption)
+                    alert('Caption copied!')
+                  }}
+                  className="px-6 bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl font-medium transition-all"
+                >
                   Copy Caption
                 </button>
               </div>
